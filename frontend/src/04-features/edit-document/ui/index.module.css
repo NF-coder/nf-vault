@@ -1,0 +1,24 @@
+.editorTextarea {
+  /* Настройка всех шрифтов в редакторе */
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.05;
+
+  /* Задаём размеры */
+  min-height: 180px;
+  min-width: 300px;
+  width: 100%;
+  height: 100%;
+  flex: 1 0 auto;
+
+  /* Убираем линию вокруг */
+  outline: none;
+}
+.editorTextarea p {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.editorTextarea :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--text-accent);
+}
