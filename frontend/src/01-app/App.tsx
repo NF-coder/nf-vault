@@ -4,6 +4,7 @@ import "./themes/default.css";
 import "./App.css";
 import { ErrorProvider } from "@/05-entities/error";
 import { EditPage } from "@/02-pages/edit";
+import { TreePage } from "@/02-pages/tree";
 
 const App = () => {
   return (
@@ -12,9 +13,11 @@ const App = () => {
         <Routes>
           <Route
             path="/edit"
-            element={
-              <EditPage/>
-            }
+            element={<EditPage/>}
+          />
+          <Route
+            path="/tree"
+            element={<TreePage/>}
           />
         </Routes>
       </BrowserRouter>
