@@ -1,0 +1,27 @@
+.topbarWrapper {
+  border-bottom: 1px solid hsl(0, 0%, 20%);
+  
+  width: 100%;
+  padding: 4px 5px 2px 5px;
+
+  display: flex;
+  justify-content: space-between;
+}
+  .logoText {
+    cursor: pointer;
+  }
+  .navSection {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-evenly;
+  }
+    .navOption {
+      color: hsl(0, 0%, 40%);
+      cursor: pointer;
+      transition: background-color 0.2s ease-out;
+    }
+      .navOption:hover {
+        color: hsl(0, 0%, 90%);
+        transition: background-color 0.2s ease-out;
+      }

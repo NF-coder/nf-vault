@@ -1,0 +1,7 @@
+.container {
+  background-color: hsl(0 0 20%);
+  padding: 5px;
+
+  display: flex;
+  flex-direction: row;
+}

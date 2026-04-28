@@ -1,0 +1,64 @@
+services:
+  database:
+    image: postgres:13.3
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_user
+      - db_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d db -U $$(cat /run/secrets/db_user)"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - database_net
+
+  backend:
+    image: nf-vault-backend:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - database
+    environment:
+      DB_URL: postgresql://database:5432/db
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    networks:
+      - database_net
+      - web_server_net
+    secrets:
+      - db_user
+      - db_password
+    
+  nginx:
+    image: nf-vault-frontend:latest
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - web_server_net
+
+secrets:
+  db_user:
+    external: true
+  db_password:
+    external: true
+
+volumes:
+  db_data:
+
+networks:
+  database_net:
+  web_server_net:

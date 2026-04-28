@@ -1,0 +1,12 @@
+.pathElem {
+  text-decoration: underline;
+  color: var(--text-primary);
+
+  font-size: 0.9rem;
+
+  cursor: pointer;
+}
+
+.pathElem:hover {
+  color: hsl(218, 69%, 60%);
+}

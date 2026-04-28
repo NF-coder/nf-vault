@@ -1,0 +1,13 @@
+package org.nfVault.controllers.DTO;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+
+@Getter
+public class CreateDocumentRequest {
+    @NotBlank(message = "Name should be specified")
+    private String name;
+
+    @NotBlank(message = "Type should be specified")
+    private String type;
+}

@@ -1,0 +1,15 @@
+.optionName {
+  padding: 4px;
+  
+  white-space: nowrap;
+  font-size: 14px;
+
+  transition: 0.04s ease-in;
+
+  cursor: pointer;
+}
+  .optionName:hover {
+    background-color: hsl(0, 0%, 20%);
+
+    transition: 0.07s ease-out;
+  }
