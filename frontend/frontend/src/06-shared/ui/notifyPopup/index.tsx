@@ -7,7 +7,7 @@ type Props = {
   duration?: number;
 };
 
-const ErrorPopup = (
+const NotifyPopup = (
   {
     text,
     onClose,
@@ -28,10 +28,10 @@ const ErrorPopup = (
   if (!visible) return null;
 
   return (
-    <div className={styles["error-message"]}>
+    <div className={styles["notify-message"]}>
       {text}
     </div>
   );
 };
 
-export default ErrorPopup;
+export default NotifyPopup;

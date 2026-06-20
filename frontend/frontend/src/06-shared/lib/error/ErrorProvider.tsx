@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback, ReactNode } from "react";
-import ErrorPopup from "../ui";
+import ErrorPopup from "@/06-shared/ui/notifyPopup";
 
 type ErrorContext = {
     showError: (text: string, duration?: number) => void

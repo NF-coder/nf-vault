@@ -4,13 +4,13 @@ import { Register } from "@/04-features/register-popup";
 import { Login } from "@/04-features/login-popup";
 import { validate } from "@/06-shared/api/auth/validate";
 import { logout as logoutReq } from "@/06-shared/api/auth/logout";
-import { useError } from "@/05-entities/error";
+import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
 export const Topbar = () => {
   const [showLoginPopup, isLoginPopupShown] = useState<boolean>(false);
   const [showRegisterPopup, isRegisterPopupShown] = useState<boolean>(false);
   const [isAuthed, setIsAuthed] = useState<boolean>(false);
-  const { showError } = useError();
+  const showError = useNotifyError()
 
   const check = async () => {
     try {
@@ -29,8 +29,8 @@ export const Topbar = () => {
     try {
       logoutReq({});
       setIsAuthed(false)
-    } catch (e) {
-      showError("Logout error")
+    } catch (error) {
+      showError(error)
     }
   }
 

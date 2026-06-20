@@ -24,7 +24,7 @@ export const createDocument = async (
   });
 
   if (!res.ok) {
-    throw new Error(`${res.status}`);
+    throw new Error(`${await res.text()}`);
   }
 
   const data = await res.json();

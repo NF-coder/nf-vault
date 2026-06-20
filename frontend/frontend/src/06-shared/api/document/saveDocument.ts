@@ -19,7 +19,7 @@ export const saveDocument = async (
   })
   
   if (!res.ok) {
-    return Promise.reject(new Error(`${res.status}`))
+    throw new Error(`${await res.text()}`)
   }
   return {}
 }

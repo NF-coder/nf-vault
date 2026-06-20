@@ -1,4 +1,5 @@
 import { login as loginReq } from "@/06-shared/api/auth/login"
+import { useNotifyError } from "@/06-shared/lib/useNotifyError"
 import { PopupButton, PopupInput, PopupWindow } from "@/06-shared/ui/popups"
 import { useState } from "react"
 
@@ -17,6 +18,7 @@ export const Login = (
 ) => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const showError = useNotifyError()
 
   const onLogin = async () => {
     try {
@@ -26,7 +28,7 @@ export const Login = (
       });
       onSuccess();
     } catch (error) {
-
+      showError(error)
     } finally {
       onClose()
     }

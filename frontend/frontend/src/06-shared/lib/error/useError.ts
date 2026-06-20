@@ -4,7 +4,7 @@ import { _ErrorContext } from "./ErrorProvider";
 const useError = () => {
     const context = useContext(_ErrorContext);
     if (!context) {
-        throw new Error("check ErrorProvider existance");
+        throw new Error("Check ErrorProvider existance");
     }
     return context;
 };

@@ -3,6 +3,7 @@ import type { EditorState } from "prosemirror-state";
 import { useDebounce } from "@/06-shared/lib/useDebounce";
 import { saveDocument } from "@/06-shared/api";
 import { getDocAsJsonString } from "./getDocAsJsonString";
+import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
 type props = {
   editorState: EditorState;
@@ -18,6 +19,7 @@ export const useAutoSaveDocument = (
   }: props 
 ) => {
   const debouncedEditorState = useDebounce(editorState, debounceMs);
+  const showError = useNotifyError()
 
   useEffect(() => {
     const saveDoc = async () => {
@@ -26,7 +28,9 @@ export const useAutoSaveDocument = (
           content: JSON.stringify(getDocAsJsonString(editorState)),
           docId: documentId,
         });
-      } catch (error) {}
+      } catch (error) {
+        showError(error);
+      }
     };
 
     saveDoc();

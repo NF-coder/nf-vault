@@ -1,4 +1,5 @@
 import { register as registerReq } from "@/06-shared/api/auth/register"
+import { useNotifyError } from "@/06-shared/lib/useNotifyError"
 import { PopupButton, PopupInput, PopupWindow } from "@/06-shared/ui/popups"
 import { useState } from "react"
 
@@ -18,6 +19,7 @@ export const Register = (
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [inviteCode, setInviteCode] = useState<string>("");
+  const showError = useNotifyError()
 
   const onRegister = async () => {
     try {
@@ -28,7 +30,7 @@ export const Register = (
       });
       onSuccess();
     } catch (error) {
-
+      showError(error)
     } finally {
       onClose()
     }

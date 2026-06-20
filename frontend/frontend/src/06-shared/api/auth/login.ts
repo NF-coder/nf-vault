@@ -22,7 +22,7 @@ export const login = async (
   });
 
   if (!res.ok) {
-    throw new Error(`${res.status}`);
+    throw new Error(`${await res.text()}`);
   }
 
   return true;

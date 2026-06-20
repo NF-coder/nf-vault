@@ -1,4 +1,5 @@
 import { createDocument } from "@/06-shared/api";
+import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 import { PopupButton, PopupInput, PopupWindow } from "@/06-shared/ui/popups"
 import { useState } from "react"
 
@@ -17,6 +18,7 @@ export const CreateDocument = (
   } : props
 ) => {
   const [documnetName, setDocumentName] = useState<string>("");
+  const showError = useNotifyError()
 
   const onCreateDocument = async () => {
     try {
@@ -26,7 +28,7 @@ export const CreateDocument = (
       });
       onSuccess();
     } catch (error) {
-
+      showError(error)
     } finally {
       onClose()
     }
