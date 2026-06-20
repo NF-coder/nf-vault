@@ -9,11 +9,13 @@ FRONTEND_IMAGE_NAME=nf-vault-frontend
 FRONTEND_PATH=./frontend
 
 run: build-all deploy
-	@echo "Done"
+	@echo "Running"
 
 stop:
 	docker stack rm $(STACK_NAME)
-	@echo "Done"
+	@echo "Stopped"
+
+restart: stop run
 
 build-backend:
 	docker buildx build \
