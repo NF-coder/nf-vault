@@ -60,7 +60,8 @@ public class UserService {
 
     public String login(String login, String password) {
         final User user = userRepository.getByUsername(login)
-                .orElseThrow(() -> new NotFoundException("User not found"));;
+                .orElseThrow(() -> new UnauthorizedException("User not found"));
+
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");
         }
