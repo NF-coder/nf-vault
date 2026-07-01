@@ -1,12 +1,14 @@
 package org.nfVault.services;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.nfVault.exceptions.NotFoundException;
 import org.nfVault.models.Document;
 import org.nfVault.repository.DocumentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class DocumentService {
     private final DocumentRepository documentRepository;
 
@@ -14,12 +16,16 @@ public class DocumentService {
         this.documentRepository = documentRepository;
     }
 
+    @Transactional
     public Integer createDocument(String title, String type) {
         Document document = Document.builder()
                 .name(title)
                 .type(type)
+                .content("")
                 .build();
         documentRepository.create(document);
+
+        log.warn("Created document {}", document);
         return document.getId();
     }
 
