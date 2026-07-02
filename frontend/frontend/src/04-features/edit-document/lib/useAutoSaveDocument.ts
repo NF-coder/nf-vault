@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import type { EditorState } from "prosemirror-state";
 import { useDebounce } from "@/06-shared/lib/useDebounce";
 import { saveDocument } from "@/06-shared/api";
-import { getDocAsJsonString } from "./getDocAsJsonString";
+import { getDocAsMarkdown } from "./getDocAsMarkdown";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
 type props = {
@@ -25,7 +25,7 @@ export const useAutoSaveDocument = (
     const saveDoc = async () => {
       try {
         await saveDocument({
-          content: JSON.stringify(getDocAsJsonString(editorState)),
+          content: getDocAsMarkdown(editorState),
           docId: documentId,
         });
       } catch (error) {
