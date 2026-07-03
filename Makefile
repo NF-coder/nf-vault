@@ -36,3 +36,7 @@ deploy:
 	docker stack deploy \
 		-c docker-compose.yaml \
 		$(STACK_NAME)
+
+frontend-dev:
+	cd ./frontend/frontend && \
+		npm start
