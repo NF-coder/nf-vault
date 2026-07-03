@@ -1,10 +1,10 @@
+import { request } from "../request";
+
 type createDocumentReq = {
   name: string
   type: string
 }
-type createDocumentRes = {
-  docId: number
-}
+type createDocumentRes = number
 
 export const createDocument = async (
   {
@@ -12,7 +12,7 @@ export const createDocument = async (
     type
   }: createDocumentReq
 ): Promise<createDocumentRes> => {
-  const res = await fetch(`/api/document/create`, {
+  const data = await request<{ id: number }>(`/api/document/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,10 +23,5 @@ export const createDocument = async (
     })
   });
 
-  if (!res.ok) {
-    throw new Error(`${await res.text()}`);
-  }
-
-  const data = await res.json();
   return data.id;
 };
