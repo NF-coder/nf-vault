@@ -8,6 +8,9 @@ FRONTEND_DOCKERFILE=./frontend/Dockerfile
 FRONTEND_IMAGE_NAME=nf-vault-frontend
 FRONTEND_PATH=./frontend
 
+PROD_COMPOSE=docker-compose.yaml
+DEV_COMPOSE=docker-compose.dev.yaml
+
 run: build-all deploy
 	@echo "Running"
 
@@ -34,9 +37,12 @@ build-all:
 
 deploy:
 	docker stack deploy \
-		-c docker-compose.yaml \
+		-c ${PROD_COMPOSE} \
 		$(STACK_NAME)
 
 frontend-dev:
 	cd ./frontend/frontend && \
 		npm start
+
+backend-dev:
+	docker compose -f ${DEV_COMPOSE} up
