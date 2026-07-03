@@ -2,6 +2,8 @@ import type { Configuration as DevServerConfiguration } from "webpack-dev-server
 import {BuildOptions} from "./types/types";
 
 export function buildDevServer(options: BuildOptions): DevServerConfiguration {
+    const backendTarget = process.env.BACKEND_PROXY_TARGET || 'http://localhost:8080';
+
     return {
         allowedHosts: 'all',
         headers: {
@@ -10,10 +12,17 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
           'Access-Control-Allow-Headers': '*',
         },
         compress: true,
+        host: '0.0.0.0',
         port: options.port ?? 3000,
-        open: true,
-        // если раздавать статику через nginx То надо делать проксирование на Index.html
+        open: false,
         historyApiFallback: true,
-        hot: true
+        hot: true,
+        proxy: {
+            '/api': {
+                target: backendTarget,
+                changeOrigin: true,
+                secure: false,
+            },
+        },
     }
 }
