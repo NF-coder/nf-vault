@@ -30,7 +30,8 @@ services:
       restart_policy:
         condition: on-failure
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     environment:
       DB_URL: postgresql://database:5432/db
       DB_USER_FILE: /run/secrets/db_user
