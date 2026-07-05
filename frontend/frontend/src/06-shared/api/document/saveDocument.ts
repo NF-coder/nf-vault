@@ -1,3 +1,5 @@
+import { request } from "../request";
+
 type saveDocumentReq = {
   content: string
   docId: number
@@ -10,16 +12,13 @@ export const saveDocument = async (
     docId
   }: saveDocumentReq
 ): Promise<saveDocumentRes> => {
-  const res = await fetch(`/api/document/${docId}/content`, {
+  await request(`/api/document/${docId}/content`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: content
-  })
-  
-  if (!res.ok) {
-    throw new Error(`${await res.text()}`)
-  }
+  });
+
   return {}
 }

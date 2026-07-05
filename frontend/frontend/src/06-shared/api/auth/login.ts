@@ -1,3 +1,5 @@
+import { request } from "../request";
+
 type loginReq = {
   login: string
   password: string
@@ -10,7 +12,7 @@ export const login = async (
     password
   }: loginReq
 ): Promise<loginRes> => {
-  const res = await fetch(`/api/auth/login`, {
+  await request(`/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,10 +22,6 @@ export const login = async (
       password: password
     })
   });
-
-  if (!res.ok) {
-    throw new Error(`${await res.text()}`);
-  }
 
   return true;
 };

@@ -1,3 +1,5 @@
+import { request } from "../request";
+
 type saveDocumentTitleReq = {
   title: string
   docId: number
@@ -10,16 +12,13 @@ export const saveDocumentTitle = async (
     docId
   }: saveDocumentTitleReq
 ): Promise<saveDocumentTitleRes> => {
-  const res = await fetch(`/api/document/${docId}/title`, {
+  await request(`/api/document/${docId}/title`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: title
-  })
-  
-  if (!res.ok) {
-    throw new Error(`${await res.text()}`)
-  }
+  });
+
   return {}
 }

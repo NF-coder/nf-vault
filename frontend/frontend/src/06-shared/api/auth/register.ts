@@ -1,3 +1,5 @@
+import { request } from "../request";
+
 type registerReq = {
   login: string
   password: string
@@ -12,7 +14,7 @@ export const register = async (
     invite_code
   }: registerReq
 ): Promise<registerRes> => {
-  const res = await fetch(`/api/auth/register`, {
+  await request(`/api/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,10 +25,6 @@ export const register = async (
       inviteCode: invite_code
     })
   });
-
-  if (!res.ok) {
-    throw new Error(`${await res.text()}`);
-  }
 
   return true;
 };
