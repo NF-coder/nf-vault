@@ -27,7 +27,7 @@ export const Topbar = () => {
 
   const logout = async () => {
     try {
-      logoutReq({});
+      await logoutReq({});
       setIsAuthed(false)
     } catch (error) {
       showError(error)
