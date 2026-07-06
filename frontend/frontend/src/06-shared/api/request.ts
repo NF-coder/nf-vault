@@ -8,7 +8,10 @@ const getErrorMessage = async (response: Response) => {
 export const request = async <T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> => {
   const response = await fetch(
     input,
-    init
+    {
+      credentials: "same-origin",
+      ...init,
+    }
   );
 
   if (!response.ok) {
