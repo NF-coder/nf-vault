@@ -1,4 +1,5 @@
 import { request } from "../request";
+import { API_V1_PATH } from "../config";
 
 type createDocumentReq = {
   name: string
@@ -12,7 +13,7 @@ export const createDocument = async (
     type
   }: createDocumentReq
 ): Promise<createDocumentRes> => {
-  const data = await request<{ id: number }>(`/api/document/create`, {
+  const data = await request<{ id: number }>(`${API_V1_PATH}/document/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

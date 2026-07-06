@@ -1,4 +1,5 @@
 import { request } from "../request";
+import { API_V1_PATH } from "../config";
 
 type getDocumentReq = {
   docId: number
@@ -11,7 +12,7 @@ type getDocumentRes = {
 export const getDocument = async ({
   docId,
 }: getDocumentReq): Promise<getDocumentRes> => {
-  return request<getDocumentRes>(`/api/document/${docId}`, {
+  return request<getDocumentRes>(`${API_V1_PATH}/document/${docId}`, {
     method: "GET",
   });
 };

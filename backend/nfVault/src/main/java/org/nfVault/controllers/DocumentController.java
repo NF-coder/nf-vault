@@ -5,13 +5,12 @@ import org.nfVault.controllers.DTO.CreateDocumentRequest;
 import org.nfVault.controllers.DTO.CreateDocumentResponse;
 import org.nfVault.controllers.DTO.GetDocumentResponse;
 import org.nfVault.controllers.DTO.UpdateDocumentRequest;
-import org.nfVault.models.Document;
 import org.nfVault.services.DocumentService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/document")
+@RequestMapping("/document")
 public class DocumentController {
     private final DocumentService documentService;
 
