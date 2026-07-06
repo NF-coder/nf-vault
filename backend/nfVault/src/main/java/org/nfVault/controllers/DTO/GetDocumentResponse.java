@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class GetDocumentResponse {
     Integer id;
     String type;
+    String title;
     String content;
 }

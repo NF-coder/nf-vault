@@ -24,11 +24,12 @@ public class DocumentController {
     public GetDocumentResponse getDocumentById(
             @PathVariable("docId") final Integer id
     ) {
-        final Document document = documentService.getDocumentById(id);
+        // final Document document = documentService.getDocumentById(id);
         return new GetDocumentResponse(
-                document.getId(),
-                document.getType(),
-                document.getContent()
+                0,
+                "placeholder",
+                "",
+                ""
         );
     }
 
