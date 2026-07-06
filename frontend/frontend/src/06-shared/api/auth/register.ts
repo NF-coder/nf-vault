@@ -1,4 +1,5 @@
 import { request } from "../request";
+import { API_V1_PATH } from "../config";
 
 type registerReq = {
   login: string
@@ -14,7 +15,7 @@ export const register = async (
     invite_code
   }: registerReq
 ): Promise<registerRes> => {
-  await request(`/api/auth/register`, {
+  await request(`${API_V1_PATH}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

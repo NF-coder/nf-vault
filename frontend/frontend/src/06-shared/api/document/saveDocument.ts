@@ -1,4 +1,5 @@
 import { request } from "../request";
+import { API_V1_PATH } from "../config";
 
 type saveDocumentReq = {
   content: string
@@ -12,7 +13,7 @@ export const saveDocument = async (
     docId
   }: saveDocumentReq
 ): Promise<saveDocumentRes> => {
-  await request(`/api/document/${docId}/content`, {
+  await request(`${API_V1_PATH}/document/${docId}/content`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

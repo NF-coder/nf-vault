@@ -9,6 +9,7 @@ type Props = {
   editorState: EditorState;
   dispatchTransaction: (tr: Transaction) => void;
   readOnly?: boolean;
+  autoSaveEnabled?: boolean;
 };
 
 const ProsemirrorEditor = ({
@@ -16,13 +17,14 @@ const ProsemirrorEditor = ({
   editorState,
   dispatchTransaction,
   readOnly = false,
+  autoSaveEnabled = true,
 }: Props) => {
-  useAutoSaveDocument({editorState, documentId});
+  useAutoSaveDocument({editorState, documentId, enabled: autoSaveEnabled});
 
   return (
     <ProseMirror
       className={styles.editorTextarea}
-      defaultState={editorState}
+      state={editorState}
       dispatchTransaction={(tr) => dispatchTransaction(tr)}
       editable={() => !readOnly}
     >

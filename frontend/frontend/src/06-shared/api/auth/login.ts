@@ -1,4 +1,5 @@
 import { request } from "../request";
+import { API_V1_PATH } from "../config";
 
 type loginReq = {
   login: string
@@ -12,7 +13,7 @@ export const login = async (
     password
   }: loginReq
 ): Promise<loginRes> => {
-  await request(`/api/auth/login`, {
+  await request(`${API_V1_PATH}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

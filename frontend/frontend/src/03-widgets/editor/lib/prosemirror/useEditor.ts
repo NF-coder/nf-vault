@@ -10,6 +10,10 @@ export const useEditor = () => {
   );
   const [isReadOnly, setReadOnly] = useState(false);
 
+  const setEditorContent = (content: string) => {
+    setEditorState(createEditorState(schema, content));
+  };
+
   const executeCommand = (
     cmd: (
       state: EditorState,
@@ -25,6 +29,7 @@ export const useEditor = () => {
 
   return {
     editorState,
+    setEditorContent,
     executeCommand,
     isReadOnly, 
     setReadOnly

@@ -45,4 +45,4 @@ frontend-dev:
 		npm start
 
 backend-dev:
-	docker compose -f ${DEV_COMPOSE} up
+	docker compose -f ${DEV_COMPOSE} up --build
