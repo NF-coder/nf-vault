@@ -25,7 +25,7 @@ services:
       - "5454:5432"
 
   backend:
-    image: nf-vault-backend:latest
+    image: nf-vault-backend-dev:latest
     deploy:
       restart_policy:
         condition: on-failure
