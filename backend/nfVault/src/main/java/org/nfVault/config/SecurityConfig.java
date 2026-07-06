@@ -45,6 +45,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain publicSwaggerFilterChain(HttpSecurity http) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
