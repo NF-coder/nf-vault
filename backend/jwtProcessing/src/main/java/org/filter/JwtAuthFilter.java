@@ -2,6 +2,7 @@ package org.filter;
 
 import java.util.Arrays;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.jwt.JwtProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -41,13 +41,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
             if(!jwtProvider.validateToken(token)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                SecurityContextHolder.clearContext();
+                filterChain.doFilter(request, response);
                 return;
             }
 
             String username = jwtProvider.getUsername(token);
             if (username == null) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                SecurityContextHolder.clearContext();
+                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -64,7 +66,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             logger.error("JWT processing error", e);
 
             SecurityContextHolder.clearContext();
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            try {
+                filterChain.doFilter(request, response);
+            } catch (Exception filterException) {
+                throw new RuntimeException(filterException);
+            }
         }
     }
 
