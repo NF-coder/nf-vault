@@ -1,4 +1,4 @@
-import { request } from "../request";
+import { RequestError, request } from "../request";
 import { API_V1_PATH } from "../config";
 
 type logoutReq = {}
@@ -11,6 +11,13 @@ export const logout = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+    }
+  }).catch((error) => {
+    if (
+      error instanceof RequestError &&
+      (error.status === 401 || error.status === 403)
+    ) {
+      return true;
     }
   });
 
