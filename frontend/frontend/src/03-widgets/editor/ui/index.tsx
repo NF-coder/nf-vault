@@ -26,21 +26,33 @@ const Editor = (
   const showError = useNotifyError();
 
   useEffect(() => {
+    let isActive = true;
+
     const loadDocument = async () => {
       setIsLoaded(false);
 
       try {
         const document = await getDocument({ docId: documentId });
+        if (!isActive) return;
+
         setEditorContent(document.content);
         setTitle(document.title);
       } catch (error) {
+        if (!isActive) return;
+
         showError(error);
       } finally {
+        if (!isActive) return;
+
         setIsLoaded(true);
       }
     };
 
     loadDocument();
+
+    return () => {
+      isActive = false;
+    };
   }, [documentId]);
 
   const dispatchTransaction = (tr: Transaction) => executeCommand((state, dispatch) => dispatch(tr));
