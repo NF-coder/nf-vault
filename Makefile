@@ -2,6 +2,7 @@ STACK_NAME=nfVault
 
 BACKEND_DOCKERFILE=./backend/Dockerfile 
 BACKEND_IMAGE_NAME=nf-vault-backend
+BACKEND_DEV_IMAGE_NAME=nf-vault-backend-dev
 BACKEND_PATH=./backend
 
 FRONTEND_DOCKERFILE=./frontend/Dockerfile
@@ -44,5 +45,10 @@ frontend-dev:
 	cd ./frontend/frontend && \
 		npm start
 
-backend-dev:
-	docker compose -f ${DEV_COMPOSE} up --build
+build-backend-dev:
+	docker buildx build \
+		-f $(BACKEND_DOCKERFILE) \
+		-t $(BACKEND_DEV_IMAGE_NAME) $(BACKEND_PATH)
+
+backend-dev: build-backend-dev
+	docker compose -f ${DEV_COMPOSE} up --force-recreate

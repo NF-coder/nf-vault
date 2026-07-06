@@ -35,7 +35,7 @@ const initEditorState = (
   })
 }
 
-const createDocFromMarkdown = (
+export const createDocFromMarkdown = (
   schema: Schema,
   content: string,
 ): Node => {

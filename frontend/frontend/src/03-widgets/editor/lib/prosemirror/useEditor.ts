@@ -1,7 +1,7 @@
 import type { EditorState, Transaction } from "prosemirror-state";
 
 import { useState } from "react";
-import { createEditorState } from "./createEditorState";
+import { createDocFromMarkdown, createEditorState } from "./createEditorState";
 import { schema } from "./config/constants";
 
 export const useEditor = () => {
@@ -11,7 +11,14 @@ export const useEditor = () => {
   const [isReadOnly, setReadOnly] = useState(false);
 
   const setEditorContent = (content: string) => {
-    setEditorState(createEditorState(schema, content));
+    setEditorState((state) => {
+      const doc = createDocFromMarkdown(schema, content);
+      const tr = state.tr
+        .replaceWith(0, state.doc.content.size, doc.content)
+        .setMeta("addToHistory", false);
+
+      return state.apply(tr);
+    });
   };
 
   const executeCommand = (
