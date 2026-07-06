@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/document")
+@PreAuthorize("isAuthenticated()")
 public class DocumentController {
     private final DocumentService documentService;
 
