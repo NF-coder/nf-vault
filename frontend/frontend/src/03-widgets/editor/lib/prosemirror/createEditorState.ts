@@ -1,5 +1,6 @@
 import { EditorState, type Plugin } from "prosemirror-state";
-import type { Schema } from "prosemirror-model";
+import type { Node, Schema } from "prosemirror-model";
+import { MarkdownParser, defaultMarkdownParser } from "prosemirror-markdown";
 
 // Prosemirror Plugins
 import { history } from "prosemirror-history";
@@ -24,16 +25,32 @@ import { dynamicMarkerPlugin } from "./plugins/exp/T3";*/
 
 const initEditorState = (
   schema: Schema<any, any>,
+  doc: Node | undefined,
   ...plugins: readonly Plugin<any>[]
 ): EditorState => {
   return EditorState.create({
     schema,
+    doc,
     plugins: plugins
   })
 }
 
+const createDocFromMarkdown = (
+  schema: Schema,
+  content: string,
+): Node => {
+  const parser = new MarkdownParser(
+    schema,
+    defaultMarkdownParser.tokenizer,
+    defaultMarkdownParser.tokens,
+  );
+
+  return parser.parse(content);
+}
+
 export const createEditorState = (
-  schema: Schema
+  schema: Schema,
+  content = "",
 ): EditorState => {
   const plugins = [
     history(),
@@ -61,6 +78,5 @@ export const createEditorState = (
     plugins.push(createDevToolsPlugin());
   }
 
-  return initEditorState(schema, ...plugins);
+  return initEditorState(schema, createDocFromMarkdown(schema, content), ...plugins);
 }
-

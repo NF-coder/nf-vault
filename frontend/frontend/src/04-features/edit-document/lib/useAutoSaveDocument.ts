@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { EditorState } from "prosemirror-state";
 import { useDebounce } from "@/06-shared/lib/useDebounce";
 import { saveDocument } from "@/06-shared/api";
@@ -9,6 +9,7 @@ type props = {
   editorState: EditorState;
   documentId: number;
   debounceMs?: number;
+  enabled?: boolean;
 }
 
 export const useAutoSaveDocument = (
@@ -16,12 +17,24 @@ export const useAutoSaveDocument = (
     editorState,
     documentId,
     debounceMs = 1000,
+    enabled = true,
   }: props 
 ) => {
   const debouncedEditorState = useDebounce(editorState, debounceMs);
+  const isInitialSaveSkipped = useRef(false);
   const showError = useNotifyError()
 
   useEffect(() => {
+    if (!enabled) {
+      isInitialSaveSkipped.current = false;
+      return;
+    }
+
+    if (!isInitialSaveSkipped.current) {
+      isInitialSaveSkipped.current = true;
+      return;
+    }
+
     const saveDoc = async () => {
       try {
         await saveDocument({
@@ -34,5 +47,5 @@ export const useAutoSaveDocument = (
     };
 
     saveDoc();
-  }, [debouncedEditorState, documentId]);
+  }, [debouncedEditorState, documentId, enabled]);
 };

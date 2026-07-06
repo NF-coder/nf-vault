@@ -4,6 +4,7 @@ type getDocumentReq = {
   docId: number
 }
 type getDocumentRes = {
+  title: string
   content: string
 }
 
