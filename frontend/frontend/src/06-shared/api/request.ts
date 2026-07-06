@@ -5,6 +5,16 @@ const getErrorMessage = async (response: Response) => {
   return `Request failed with status ${response.status}`;
 };
 
+export class RequestError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "RequestError";
+    this.status = status;
+  }
+}
+
 export const request = async <T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> => {
   const response = await fetch(
     input,
@@ -15,7 +25,7 @@ export const request = async <T>(input: RequestInfo | URL, init?: RequestInit): 
   );
 
   if (!response.ok) {
-    throw new Error(await getErrorMessage(response));
+    throw new RequestError(await getErrorMessage(response), response.status);
   }
 
   const contentType = response.headers.get("content-type") || "";
