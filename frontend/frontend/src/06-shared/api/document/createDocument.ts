@@ -13,7 +13,7 @@ export const createDocument = async (
     type
   }: createDocumentReq
 ): Promise<createDocumentRes> => {
-  const data = await request<{ id: number }>(`${API_V1_PATH}/document/create`, {
+  const data = await request<{ docId: number }>(`${API_V1_PATH}/document/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,5 +24,5 @@ export const createDocument = async (
     })
   });
 
-  return data.id;
+  return data.docId;
 };

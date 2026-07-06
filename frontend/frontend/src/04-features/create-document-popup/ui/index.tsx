@@ -6,7 +6,7 @@ import { useState } from "react"
 
 type props = {
   isOpen: boolean
-  onSuccess: () => void
+  onSuccess: (documentId: number) => void
   onClose: () => void
 }
 
@@ -22,11 +22,11 @@ export const CreateDocument = (
 
   const onCreateDocument = async () => {
     try {
-      await createDocument({
+      const documentId = await createDocument({
         name: documnetName,
         type: "document"
       });
-      onSuccess();
+      onSuccess(documentId);
     } catch (error) {
       showError(error)
     } finally {

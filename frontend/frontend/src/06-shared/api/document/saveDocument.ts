@@ -18,7 +18,9 @@ export const saveDocument = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: content
+    body: JSON.stringify({
+      content: content ?? "",
+    })
   });
 
   return {}

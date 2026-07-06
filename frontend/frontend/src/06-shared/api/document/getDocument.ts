@@ -12,7 +12,12 @@ type getDocumentRes = {
 export const getDocument = async ({
   docId,
 }: getDocumentReq): Promise<getDocumentRes> => {
-  return request<getDocumentRes>(`${API_V1_PATH}/document/${docId}`, {
+  const document = await request<getDocumentRes>(`${API_V1_PATH}/document/${docId}`, {
     method: "GET",
   });
+
+  return {
+    title: document.title,
+    content: document.content
+  };
 };

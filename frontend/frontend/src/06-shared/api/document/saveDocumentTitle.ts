@@ -18,7 +18,9 @@ export const saveDocumentTitle = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: title
+    body: JSON.stringify({
+      title: title ?? "",
+    })
   });
 
   return {}
