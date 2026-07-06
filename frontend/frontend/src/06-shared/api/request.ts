@@ -34,5 +34,11 @@ export const request = async <T>(input: RequestInfo | URL, init?: RequestInit): 
     return await response.json();
   }
 
+  const text = await response.text();
+
+  if (text.length === 0) {
+    return undefined as T;
+  }
+
   throw new Error("Unknown response object");
 };
