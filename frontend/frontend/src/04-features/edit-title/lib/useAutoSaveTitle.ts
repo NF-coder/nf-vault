@@ -17,32 +17,43 @@ export const useAutoSaveTitle = ({
   debounceMs = 1000,
   enabled = true,
 }: props) => {
-  const debouncedEditorState = useDebounce(title, debounceMs);
-  const isInitialSaveSkipped = useRef(false);
+  const debouncedTitle = useDebounce(title, debounceMs);
+  const savedTitleRef = useRef<string | null>(null);
+  const documentIdRef = useRef(documentId);
   const showError = useNotifyError()
 
   useEffect(() => {
+    if (documentIdRef.current !== documentId) {
+      documentIdRef.current = documentId;
+      savedTitleRef.current = null;
+    }
+
     if (!enabled) {
-      isInitialSaveSkipped.current = false;
+      savedTitleRef.current = null;
       return;
     }
 
-    if (!isInitialSaveSkipped.current) {
-      isInitialSaveSkipped.current = true;
+    if (savedTitleRef.current === null) {
+      savedTitleRef.current = title;
+      return;
+    }
+
+    if (debouncedTitle === savedTitleRef.current) {
       return;
     }
 
     const saveTitle = async () => {
       try {
         await saveDocumentTitle({
-          title: title,
+          title: debouncedTitle,
           docId: documentId,
         });
+        savedTitleRef.current = debouncedTitle;
       } catch (error) {
         showError(error)
       }
     };
 
     saveTitle();
-  }, [debouncedEditorState, documentId, enabled]);
+  }, [debouncedTitle, documentId, enabled]);
 };
