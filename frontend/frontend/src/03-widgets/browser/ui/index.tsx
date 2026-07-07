@@ -6,14 +6,22 @@ import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-export const Browser = () => {
+type props = {
+  parentId?: number | null
+}
+
+export const Browser = (
+  {
+    parentId = null,
+  }: props
+) => {
   const [documents, setDocuments] = useState<DocumentListItem[]>([]);
   const showError = useNotifyError();
   const navigate = useNavigate();
 
   const loadDocuments = async () => {
     try {
-      setDocuments(await getDocuments());
+      setDocuments(await getDocuments({ parentId }));
     } catch (error) {
       showError(error);
     }
@@ -21,11 +29,11 @@ export const Browser = () => {
 
   useEffect(() => {
     loadDocuments();
-  }, []);
+  }, [parentId]);
 
   return (
     <div className={styles.browserContainer}>
-      <ActionBar onProcessFinished={loadDocuments}/>
+      <ActionBar parentId={parentId} onProcessFinished={loadDocuments}/>
       {documents.map((document) => {       
         return (
           <File
@@ -35,7 +43,7 @@ export const Browser = () => {
             onClick={
               document.type === "document"
                 ? () => navigate(`/edit/${document.id}`)
-                : undefined
+                : () => navigate(`/tree/${document.id}`)
             }
           />
         );

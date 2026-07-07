@@ -21,10 +21,28 @@ public class DocumentController {
 
     @GetMapping
     @PreAuthorize("permitAll()")
-    public List<ListDocumentItemResponse> getDocuments() {
-        return documentService.getDocuments()
+    public List<ListDocumentItemResponse> getDocuments(
+            @RequestParam(value = "parentId", required = false) final Integer parentId
+    ) {
+        return documentService.getDocumentsByParentId(parentId)
                 .stream()
                 .map(document -> new ListDocumentItemResponse(
+                        document.getId(),
+                        document.getType(),
+                        document.getName(),
+                        document.getParent() != null ? document.getParent().getId() : null
+                ))
+                .toList();
+    }
+
+    @GetMapping("/{docId}/path")
+    @PreAuthorize("permitAll()")
+    public List<DocumentPathItemResponse> getDocumentPath(
+            @PathVariable("docId") final Integer id
+    ) {
+        return documentService.getDocumentPath(id)
+                .stream()
+                .map(document -> new DocumentPathItemResponse(
                         document.getId(),
                         document.getType(),
                         document.getName()
@@ -95,7 +113,8 @@ public class DocumentController {
     ) {
         Integer documentId = documentService.createDocument(
                 request.getName(),
-                request.getType()
+                request.getType(),
+                request.getParentId()
         );
         return new CreateDocumentResponse(
                 documentId

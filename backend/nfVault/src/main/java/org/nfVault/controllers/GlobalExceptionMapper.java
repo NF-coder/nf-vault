@@ -2,6 +2,7 @@ package org.nfVault.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.nfVault.controllers.DTO.ErrorResponse;
+import org.nfVault.exceptions.ConflictException;
 import org.nfVault.exceptions.ExpiredException;
 import org.nfVault.exceptions.NotFoundException;
 import org.nfVault.exceptions.UnauthorizedException;
@@ -33,6 +34,12 @@ public class GlobalExceptionMapper {
     })
     public ResponseEntity<ErrorResponse> handleUnauthorized(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse(ex.getMessage()));
     }
 

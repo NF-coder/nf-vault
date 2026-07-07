@@ -5,3 +5,9 @@
 
   cursor: default;
 }
+
+.pathWrapper span {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}

@@ -2,27 +2,38 @@ import styles from "./index.module.css"
 
 import { PathElem } from "./pathElem";
 
+export type PathItem = {
+  id: number
+  type?: string
+  title: string
+}
 
 type props = {
-  path: string[]
+  path: PathItem[]
+  onNavigate?: (id: number | null) => void
 }
 
 export const Path = (
   {
-    path
+    path,
+    onNavigate = () => {},
   }: props
 ) => {
   return (
     <div className={styles.pathWrapper}>
-      {path.map((name, idx) => {       
+      <PathElem
+        name="/"
+        onClick={() => onNavigate(null)}
+      />
+      {path.map((item, idx) => {       
           return (
-            <>
+            <span key={item.id}>
+              {idx > 0 ? <p>/</p> : null}
               <PathElem
-                key={idx}
-                name={name}
+                name={item.title}
+                onClick={() => onNavigate(item.id)}
               />
-              <p>/</p>
-            </>
+            </span>
           );
         })}
     </div>

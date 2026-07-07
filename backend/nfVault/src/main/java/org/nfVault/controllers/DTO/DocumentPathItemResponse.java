@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListDocumentItemResponse {
+public class DocumentPathItemResponse {
     Integer id;
     String type;
     String title;
-    Integer parentId;
 }

@@ -4,11 +4,13 @@ import styles from "./index.module.css";
 import { TopbarButton } from "@/06-shared/ui/buttons";
 
 type props = {
+  parentId?: number | null
   onProcessFinished?: () => void
 }
 
 export const CreateFileButton = (
   {
+    parentId = null,
     onProcessFinished = () => {},
   }: props
 ) => {
@@ -26,6 +28,7 @@ export const CreateFileButton = (
         isShown={isShown}
         setShown={setShown}
         buttonRef={buttonRef}
+        parentId={parentId}
         onProcessFinished={onProcessFinished}
       />
     </div>

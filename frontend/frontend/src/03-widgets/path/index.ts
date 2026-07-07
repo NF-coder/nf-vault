@@ -1,1 +1,1 @@
-export { Path } from "./ui"
+export { Path, type PathItem } from "./ui"

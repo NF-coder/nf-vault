@@ -4,10 +4,12 @@ import { useNavigate } from "react-router";
 import styles from "./index.module.css"
 
 type props = {
+  parentId?: number | null
   onProcessFinished?: () => void
 }
 
 export const CreateDocumentButton = (  {
+    parentId = null,
     onProcessFinished = () => {}
   } : props
 ) => {
@@ -19,6 +21,7 @@ export const CreateDocumentButton = (  {
       <p className={styles.optionName} onClick={() => setShown(true)}>New Document</p>
       <CreateDocument
         isOpen={isShown}
+        parentId={parentId}
         onClose={() => {setShown(false); onProcessFinished()}}
         onSuccess={(documentId) => {setShown(false); navigate(`/edit/${documentId}`)}}
       />
