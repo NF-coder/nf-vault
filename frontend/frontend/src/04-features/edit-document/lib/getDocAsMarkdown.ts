@@ -12,5 +12,9 @@ const markdownSerializer = new MarkdownSerializer(
 );
 
 export const getDocAsMarkdown = (state: EditorState): string => {
+  if (state.doc.textContent.length === 0) {
+    return "";
+  }
+
   return markdownSerializer.serialize(state.doc);
 };

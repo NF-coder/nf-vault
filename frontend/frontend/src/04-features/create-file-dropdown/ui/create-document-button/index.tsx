@@ -1,5 +1,6 @@
 import { CreateDocument } from "@/04-features/create-document-popup";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import styles from "./index.module.css"
 
 type props = {
@@ -11,6 +12,7 @@ export const CreateDocumentButton = (  {
   } : props
 ) => {
   const [isShown, setShown] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -18,7 +20,7 @@ export const CreateDocumentButton = (  {
       <CreateDocument
         isOpen={isShown}
         onClose={() => {setShown(false); onProcessFinished()}}
-        onSuccess={() => {setShown(false); onProcessFinished()}}
+        onSuccess={(documentId) => navigate(`/edit/${documentId}`)}
       />
     </>
   )

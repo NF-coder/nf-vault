@@ -12,7 +12,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/edit"
+            path="/edit/:docId"
             element={<EditPage/>}
           />
           <Route

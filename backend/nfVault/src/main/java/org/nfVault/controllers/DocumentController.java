@@ -1,16 +1,15 @@
 package org.nfVault.controllers;
 
 import jakarta.validation.Valid;
-import org.nfVault.controllers.DTO.CreateDocumentRequest;
-import org.nfVault.controllers.DTO.CreateDocumentResponse;
-import org.nfVault.controllers.DTO.GetDocumentResponse;
-import org.nfVault.controllers.DTO.UpdateDocumentRequest;
+import org.nfVault.controllers.DTO.*;
+import org.nfVault.models.Document;
 import org.nfVault.services.DocumentService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/document")
+@PreAuthorize("isAuthenticated()")
 public class DocumentController {
     private final DocumentService documentService;
 
@@ -23,12 +22,36 @@ public class DocumentController {
     public GetDocumentResponse getDocumentById(
             @PathVariable("docId") final Integer id
     ) {
-        // final Document document = documentService.getDocumentById(id);
+        final Document document = documentService.getDocumentById(id);
         return new GetDocumentResponse(
-                0,
-                "placeholder",
-                "",
-                ""
+                document.getId(),
+                document.getType(),
+                document.getName(),
+                document.getContent()
+        );
+    }
+
+    @PutMapping("/{docId}/content")
+    public void putDocumentContent(
+            @PathVariable("docId") final String id,
+            @Valid @RequestBody final PutDocumentContentRequest contentObject
+    ) {
+        documentService.updateDocumentById(
+                Integer.parseInt(id),
+                null,
+                contentObject.getContent()
+        );
+    }
+
+    @PutMapping("/{docId}/title")
+    public void putDocumentTitle(
+            @PathVariable("docId") final String id,
+            @Valid @RequestBody final PutDocumentTitleRequest titleObject
+    ) {
+        documentService.updateDocumentById(
+                Integer.parseInt(id),
+                titleObject.getTitle(),
+                null
         );
     }
 

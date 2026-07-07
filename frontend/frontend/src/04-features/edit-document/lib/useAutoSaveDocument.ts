@@ -20,32 +20,44 @@ export const useAutoSaveDocument = (
     enabled = true,
   }: props 
 ) => {
-  const debouncedEditorState = useDebounce(editorState, debounceMs);
-  const isInitialSaveSkipped = useRef(false);
+  const mdContent = getDocAsMarkdown(editorState)
+  const debouncedContent = useDebounce(mdContent, debounceMs);
+  const savedContentRef = useRef<string | null>(null);
+  const documentIdRef = useRef(documentId);
   const showError = useNotifyError()
 
   useEffect(() => {
+    if (documentIdRef.current !== documentId) {
+      documentIdRef.current = documentId;
+      savedContentRef.current = null;
+    }
+
     if (!enabled) {
-      isInitialSaveSkipped.current = false;
+      savedContentRef.current = null;
       return;
     }
 
-    if (!isInitialSaveSkipped.current) {
-      isInitialSaveSkipped.current = true;
+    if (savedContentRef.current === null) {
+      savedContentRef.current = mdContent;
+      return;
+    }
+
+    if (debouncedContent === savedContentRef.current) {
       return;
     }
 
     const saveDoc = async () => {
       try {
         await saveDocument({
-          content: getDocAsMarkdown(editorState),
+          content: debouncedContent,
           docId: documentId,
         });
+        savedContentRef.current = debouncedContent;
       } catch (error) {
         showError(error);
       }
     };
 
     saveDoc();
-  }, [debouncedEditorState, documentId, enabled]);
+  }, [debouncedContent, documentId, enabled]);
 };
