@@ -11,3 +11,9 @@
   background-color: hsl(0 0 10%);
   transition: 0.07s ease-out;
 }
+
+.fileType {
+  display: inline-block;
+  min-width: 42px;
+  color: hsl(0 0% 60%);
+}

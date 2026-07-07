@@ -8,20 +8,22 @@ type props = {
   isShown: boolean
   setShown: (shown: boolean) => void
   buttonRef?: RefObject<HTMLElement | null>
+  onProcessFinished?: () => void
 }
 
 export const CreateFileDropdown = (
   {
     isShown,
     setShown,
-    buttonRef
+    buttonRef,
+    onProcessFinished = () => {},
   } : props
 ) => {
   return isShown ?  (
     <DropdownMenu onClose={() => setShown(false)} buttonRef={buttonRef}>
       <div className={styles.wrapper}>
-        <CreateDirectoryButton onProcessFinished={() => setShown(false)}/>
-        <CreateDocumentButton onProcessFinished={() => setShown(false)}/>
+        <CreateDirectoryButton onProcessFinished={() => {setShown(false); onProcessFinished()}}/>
+        <CreateDocumentButton onProcessFinished={() => {setShown(false); onProcessFinished()}}/>
       </div>
     </DropdownMenu>
   ): null

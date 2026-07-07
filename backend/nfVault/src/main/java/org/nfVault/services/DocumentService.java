@@ -7,6 +7,8 @@ import org.nfVault.models.Document;
 import org.nfVault.repository.DocumentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class DocumentService {
@@ -32,6 +34,10 @@ public class DocumentService {
     public Document getDocumentById(Integer id) {
         return documentRepository.getById(id)
                 .orElseThrow(() -> new NotFoundException("Document not found"));
+    }
+
+    public List<Document> getDocuments() {
+        return documentRepository.getAll();
     }
 
     @Transactional

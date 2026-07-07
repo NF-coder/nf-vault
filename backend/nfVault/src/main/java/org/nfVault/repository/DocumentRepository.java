@@ -6,6 +6,7 @@ import org.nfVault.models.Document;
 import org.nfVault.models.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,6 +16,12 @@ public class DocumentRepository {
 
     public Optional<Document> getById(Integer id){
         return Optional.ofNullable(entityManager.find(Document.class, id));
+    }
+
+    public List<Document> getAll() {
+        return entityManager
+                .createQuery("SELECT document FROM Document document ORDER BY document.type, document.name", Document.class)
+                .getResultList();
     }
 
     public void update(Document document){

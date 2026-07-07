@@ -20,7 +20,7 @@ export const CreateDocumentButton = (  {
       <CreateDocument
         isOpen={isShown}
         onClose={() => {setShown(false); onProcessFinished()}}
-        onSuccess={(documentId) => navigate(`/edit/${documentId}`)}
+        onSuccess={(documentId) => {setShown(false); navigate(`/edit/${documentId}`)}}
       />
     </>
   )

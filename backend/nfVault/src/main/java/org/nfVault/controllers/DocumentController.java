@@ -7,6 +7,8 @@ import org.nfVault.services.DocumentService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/document")
 @PreAuthorize("isAuthenticated()")
@@ -15,6 +17,19 @@ public class DocumentController {
 
     public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @GetMapping
+    @PreAuthorize("permitAll()")
+    public List<ListDocumentItemResponse> getDocuments() {
+        return documentService.getDocuments()
+                .stream()
+                .map(document -> new ListDocumentItemResponse(
+                        document.getId(),
+                        document.getType(),
+                        document.getName()
+                ))
+                .toList();
     }
 
     @GetMapping("/{docId}")
