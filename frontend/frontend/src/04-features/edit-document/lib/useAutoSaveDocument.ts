@@ -20,7 +20,8 @@ export const useAutoSaveDocument = (
     enabled = true,
   }: props 
 ) => {
-  const debouncedEditorState = useDebounce(editorState, debounceMs);
+  const mdContent = getDocAsMarkdown(editorState)
+  const debouncedEditorState = useDebounce(mdContent, debounceMs);
   const isInitialSaveSkipped = useRef(false);
   const showError = useNotifyError()
 
@@ -38,7 +39,7 @@ export const useAutoSaveDocument = (
     const saveDoc = async () => {
       try {
         await saveDocument({
-          content: getDocAsMarkdown(editorState),
+          content: mdContent,
           docId: documentId,
         });
       } catch (error) {
