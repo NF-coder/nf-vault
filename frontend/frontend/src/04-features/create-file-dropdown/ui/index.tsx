@@ -24,6 +24,7 @@ export const CreateFileDropdown = (
   return isShown ?  (
     <DropdownMenu onClose={() => setShown(false)} buttonRef={buttonRef}>
       <div className={styles.wrapper}>
+        <div className={styles.header}>create</div>
         <CreateDirectoryButton parentId={parentId} onProcessFinished={() => {setShown(false); onProcessFinished()}}/>
         <CreateDocumentButton parentId={parentId} onProcessFinished={() => {setShown(false); onProcessFinished()}}/>
       </div>

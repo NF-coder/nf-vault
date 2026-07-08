@@ -1,7 +1,6 @@
 import { CreateFileDropdown } from "@/04-features/create-file-dropdown";
 import { useState, useRef } from "react";
 import styles from "./index.module.css";
-import { TopbarButton } from "@/06-shared/ui/buttons";
 
 type props = {
   parentId?: number | null
@@ -15,15 +14,18 @@ export const CreateFileButton = (
   }: props
 ) => {
   const [isShown, setShown] = useState(false);
-  const buttonRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   
   return (
     <div className={styles.container}>
-      <div ref={buttonRef} >
-        <TopbarButton handleClick={() => setShown(true)}>
-          +
-        </TopbarButton>
-      </div>
+      <button
+        ref={buttonRef}
+        className={styles.button}
+        type="button"
+        onClick={() => setShown(true)}
+      >
+        [+]
+      </button>
       <CreateFileDropdown
         isShown={isShown}
         setShown={setShown}

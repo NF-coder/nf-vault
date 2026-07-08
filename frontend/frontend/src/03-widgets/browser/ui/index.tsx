@@ -34,20 +34,31 @@ export const Browser = (
   return (
     <div className={styles.browserContainer}>
       <ActionBar parentId={parentId} onProcessFinished={loadDocuments}/>
-      {documents.map((document) => {       
-        return (
-          <File
-            key={document.id}
-            name={document.title}
-            type={document.type}
-            onClick={
-              document.type === "document"
-                ? () => navigate(`/edit/${document.id}`)
-                : () => navigate(`/tree/${document.id}`)
-            }
-          />
-        );
-      })}
+      <div className={styles.browserHeader}>
+        <span>type</span>
+        <span>name</span>
+      </div>
+      <div className={styles.fileList}>
+        {documents.length === 0 ? (
+          <div className={styles.emptyState}>
+            <span>-- empty directory --</span>
+          </div>
+        ) : null}
+        {documents.map((document, idx) => {       
+          return (
+            <File
+              key={document.id}
+              name={document.title}
+              type={document.type}
+              onClick={
+                document.type === "document"
+                  ? () => navigate(`/edit/${document.id}`)
+                  : () => navigate(`/tree/${document.id}`)
+              }
+            />
+          );
+        })}
+      </div>
     </div>
   )
 }

@@ -18,7 +18,10 @@ export const CreateDocumentButton = (  {
 
   return (
     <>
-      <p className={styles.optionName} onClick={() => setShown(true)}>New Document</p>
+      <button className={styles.optionName} type="button" onClick={() => setShown(true)}>
+        <span>[doc]</span>
+        <span>document</span>
+      </button>
       <CreateDocument
         isOpen={isShown}
         parentId={parentId}

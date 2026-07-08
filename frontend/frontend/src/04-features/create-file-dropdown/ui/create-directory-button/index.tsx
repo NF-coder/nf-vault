@@ -17,7 +17,10 @@ export const CreateDirectoryButton = (
 
   return (
     <>
-      <p className={styles.optionName} onClick={() => setShown(true)}>New Directory</p>
+      <button className={styles.optionName} type="button" onClick={() => setShown(true)}>
+        <span>[dir]</span>
+        <span>directory</span>
+      </button>
       <CreateDirectory
         isOpen={isShown}
         parentId={parentId}
