@@ -1,6 +1,8 @@
 import styles from "./index.module.css"
 import { File } from "./file"
 import { ActionBar } from "./action-bar"
+import { DeleteTreeNodePopup } from "@/04-features/delete-tree-node-popup";
+import { RenameTreeNodePopup } from "@/04-features/rename-tree-node-popup";
 import { getDocuments, type DocumentListItem } from "@/06-shared/api";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 import { useEffect, useState } from "react";
@@ -37,6 +39,7 @@ export const Browser = (
       <div className={styles.browserHeader}>
         <span>type</span>
         <span>name</span>
+        <span>actions</span>
       </div>
       <div className={styles.fileList}>
         {documents.length === 0 ? (
@@ -54,6 +57,18 @@ export const Browser = (
                 document.type === "document"
                   ? () => navigate(`/edit/${document.id}`)
                   : () => navigate(`/tree/${document.id}`)
+              }
+              actions={
+                <>
+                  <RenameTreeNodePopup
+                    document={document}
+                    onProcessFinished={loadDocuments}
+                  />
+                  <DeleteTreeNodePopup
+                    document={document}
+                    onProcessFinished={loadDocuments}
+                  />
+                </>
               }
             />
           );

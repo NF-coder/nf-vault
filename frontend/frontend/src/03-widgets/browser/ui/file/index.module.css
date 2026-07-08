@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 74px 1fr;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
 
@@ -37,4 +37,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
 }

@@ -3,6 +3,7 @@ import styles from "./index.module.css"
 
 type props = {
   name: string
+  value?: string
   setInput: (data: string) => void
   onEnter?: () => void
   autoFocus?: boolean
@@ -11,6 +12,7 @@ type props = {
 export const PopupInput = (
   {
     name,
+    value,
     setInput,
     onEnter,
     autoFocus = false
@@ -30,6 +32,7 @@ export const PopupInput = (
       <input 
         className={styles.input} 
         id={id} 
+        value={value}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         autoFocus={autoFocus}

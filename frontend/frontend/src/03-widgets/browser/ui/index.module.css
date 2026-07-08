@@ -16,7 +16,7 @@
 
 .browserHeader {
   display: grid;
-  grid-template-columns: 74px 1fr;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
   gap: 10px;
 
   padding: 5px 10px;
