@@ -92,6 +92,8 @@ public class DocumentService {
     public void deleteDocumentById(Integer id) {
         Document document = documentRepository.getById(id)
                 .orElseThrow(() -> new NotFoundException("Document not found"));
+        documentRepository.getByParentId(id)
+                .forEach(child -> deleteDocumentById(child.getId()));
         documentRepository.delete(document);
     }
 }

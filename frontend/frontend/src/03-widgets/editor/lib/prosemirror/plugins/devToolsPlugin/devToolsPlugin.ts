@@ -6,11 +6,18 @@ export const createDevToolsPlugin = () => {
 
   return new Plugin({
     view(view: EditorView) {
+      let destroyDevTools: (() => void) | undefined;
+
       if (!initialized && process.env.NODE_ENV === "development") {
         initialized = true;
-        (require("prosemirror-dev-tools").applyDevTools)(view);
+        destroyDevTools = (require("prosemirror-dev-tools").applyDevTools)(view);
       }
-      return {};
+
+      return {
+        destroy() {
+          destroyDevTools?.();
+        }
+      };
     }
   });
 };
