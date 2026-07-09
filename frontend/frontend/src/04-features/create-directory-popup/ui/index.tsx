@@ -5,6 +5,7 @@ import { useState } from "react"
 
 type props = {
   isOpen: boolean
+  parentId?: number | null
   onSuccess: () => void
   onClose: () => void
 }
@@ -12,6 +13,7 @@ type props = {
 export const CreateDirectory = (
   {
     isOpen,
+    parentId = null,
     onSuccess,
     onClose
   } : props
@@ -23,7 +25,8 @@ export const CreateDirectory = (
     try {
       await createDocument({
         name: dirName,
-        type: "directory"
+        type: "directory",
+        parentId
       });
       onSuccess();
     } catch (error) {

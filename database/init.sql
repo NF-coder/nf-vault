@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Documents (
   id SERIAL PRIMARY KEY,
   content TEXT NOT NULL,
   "type" TEXT NOT NULL,
-  "name" TEXT NOT NULL
+  "name" TEXT NOT NULL,
+  parent_id INTEGER REFERENCES Documents(id)
 );
 
 CREATE TABLE IF NOT EXISTS Invite_Codes (

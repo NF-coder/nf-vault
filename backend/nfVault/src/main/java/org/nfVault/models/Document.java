@@ -26,4 +26,8 @@ public class Document {
     @NotNull
     @Column(name = "content")
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Document parent;
 }

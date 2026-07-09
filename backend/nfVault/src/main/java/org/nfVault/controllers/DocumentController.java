@@ -7,6 +7,8 @@ import org.nfVault.services.DocumentService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/document")
 @PreAuthorize("isAuthenticated()")
@@ -15,6 +17,37 @@ public class DocumentController {
 
     public DocumentController(DocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @GetMapping
+    @PreAuthorize("permitAll()")
+    public List<ListDocumentItemResponse> getDocuments(
+            @RequestParam(value = "parentId", required = false) final Integer parentId
+    ) {
+        return documentService.getDocumentsByParentId(parentId)
+                .stream()
+                .map(document -> new ListDocumentItemResponse(
+                        document.getId(),
+                        document.getType(),
+                        document.getName(),
+                        document.getParent() != null ? document.getParent().getId() : null
+                ))
+                .toList();
+    }
+
+    @GetMapping("/{docId}/path")
+    @PreAuthorize("permitAll()")
+    public List<DocumentPathItemResponse> getDocumentPath(
+            @PathVariable("docId") final Integer id
+    ) {
+        return documentService.getDocumentPath(id)
+                .stream()
+                .map(document -> new DocumentPathItemResponse(
+                        document.getId(),
+                        document.getType(),
+                        document.getName()
+                ))
+                .toList();
     }
 
     @GetMapping("/{docId}")
@@ -80,7 +113,8 @@ public class DocumentController {
     ) {
         Integer documentId = documentService.createDocument(
                 request.getName(),
-                request.getType()
+                request.getType(),
+                request.getParentId()
         );
         return new CreateDocumentResponse(
                 documentId

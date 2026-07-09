@@ -10,4 +10,6 @@ public class CreateDocumentRequest {
 
     @NotBlank(message = "Type should be specified")
     private String type;
+
+    private Integer parentId;
 }

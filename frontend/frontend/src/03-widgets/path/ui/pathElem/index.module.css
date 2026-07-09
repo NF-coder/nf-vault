@@ -1,5 +1,6 @@
 .pathElem {
-  text-decoration: underline;
+  margin: 0;
+  text-decoration: none;
   color: var(--text-primary);
 
   font-size: 0.9rem;
@@ -8,5 +9,6 @@
 }
 
 .pathElem:hover {
-  color: hsl(218, 69%, 60%);
+  color: hsl(0 0% 100%);
+  text-decoration: underline;
 }

@@ -19,6 +19,10 @@ const App = () => {
             path="/tree"
             element={<TreePage/>}
           />
+          <Route
+            path="/tree/:dirId"
+            element={<TreePage/>}
+          />
         </Routes>
       </BrowserRouter>
     </ErrorProvider>

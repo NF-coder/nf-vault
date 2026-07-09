@@ -4,13 +4,15 @@ import { API_V1_PATH } from "../config";
 type createDocumentReq = {
   name: string
   type: string
+  parentId?: number | null
 }
 type createDocumentRes = number
 
 export const createDocument = async (
   {
     name,
-    type
+    type,
+    parentId = null,
   }: createDocumentReq
 ): Promise<createDocumentRes> => {
   const data = await request<{ docId: number }>(`${API_V1_PATH}/document/create`, {
@@ -20,7 +22,8 @@ export const createDocument = async (
     },
     body: JSON.stringify({
       name: name,
-      type: type
+      type: type,
+      parentId: parentId
     })
   });
 

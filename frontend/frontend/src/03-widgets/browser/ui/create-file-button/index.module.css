@@ -3,22 +3,29 @@
 }
 
 .button {
-  background: transparent;
+  padding: 1px 4px;
   border: none;
   border-radius: 4px;
-  padding: 2px;
 
-  font-size: 18px;
+  background-color: transparent;
+  color: var(--text-primary);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.95rem;
+  line-height: 1.2;
 
   cursor: pointer;
-  color: white;
-  transition: background-color 0.2s ease-out;
+  transition:
+    background-color 0.08s ease-out,
+    color 0.07s ease-out;
 }
-  .button:hover {
-    background-color: hsl(0 0 30%);
-    transition: background-color 0.2s ease-out;
-  }
-  .button:active {
-    background-color: hsl(0 0 35%);
-    transition: background-color 0.2s ease-out;
-  }
+
+.button:hover,
+.button:focus-visible {
+  background-color: hsl(0 0% 22%);
+  color: hsl(0 0% 100%);
+  outline: none;
+}
+
+.button:active {
+  background-color: hsl(0 0% 22%);
+}
