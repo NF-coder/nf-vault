@@ -1,14 +1,18 @@
 import CodeMirror from "@uiw/react-codemirror";
-import { markdown } from "@codemirror/lang-markdown";
+import type { ReactCodeMirrorProps } from "@uiw/react-codemirror";
 import styles from "./index.module.css";
 import { useAutoSaveDocument } from "../lib/useAutoSaveDocument";
 
-const extensions = [markdown()];
+type EditorConfig = Pick<
+  ReactCodeMirrorProps,
+  "extensions" | "theme" | "placeholder" | "basicSetup"
+>;
 
 type Props = {
   documentId: number;
   content: string;
   onChange: (content: string) => void;
+  config: EditorConfig;
   readOnly?: boolean;
   autoSaveEnabled?: boolean;
 };
@@ -17,6 +21,7 @@ export const MarkdownEditor = ({
   documentId,
   content,
   onChange,
+  config,
   readOnly = false,
   autoSaveEnabled = true,
 }: Props) => {
@@ -24,19 +29,12 @@ export const MarkdownEditor = ({
 
   return (
     <CodeMirror
+      {...config}
       className={styles.editorTextarea}
       value={content}
-      extensions={extensions}
       onChange={onChange}
       readOnly={readOnly}
       editable={!readOnly}
-      theme="dark"
-      placeholder="Your text"
-      basicSetup={{
-        lineNumbers: false,
-        foldGutter: false,
-        highlightActiveLineGutter: false,
-      }}
     />
   );
 };

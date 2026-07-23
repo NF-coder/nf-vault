@@ -6,6 +6,7 @@ import { EditorTitle } from "@/04-features/edit-title";
 import { MarkdownEditor } from "@/04-features/edit-document";
 import { getDocument } from "@/06-shared/api";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
+import { editorConfig } from "../lib/codemirror/config";
 
 type props = {
   readonly documentId: number
@@ -65,6 +66,7 @@ const Editor = (
         documentId={documentId}
         content={content}
         onChange={setContent}
+        config={editorConfig}
         readOnly={isReadOnly}
         autoSaveEnabled={isLoaded}
       />
