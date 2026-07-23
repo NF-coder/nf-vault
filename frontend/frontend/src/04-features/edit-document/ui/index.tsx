@@ -1,36 +1,42 @@
-import "prosemirror-view/style/prosemirror.css";
+import CodeMirror from "@uiw/react-codemirror";
+import { markdown } from "@codemirror/lang-markdown";
 import styles from "./index.module.css";
-import type { EditorState, Transaction } from "prosemirror-state";
-import { ProseMirror, ProseMirrorDoc } from "@handlewithcare/react-prosemirror";
 import { useAutoSaveDocument } from "../lib/useAutoSaveDocument";
 
+const extensions = [markdown()];
+
 type Props = {
-  documentId: number
-  editorState: EditorState;
-  dispatchTransaction: (tr: Transaction) => void;
+  documentId: number;
+  content: string;
+  onChange: (content: string) => void;
   readOnly?: boolean;
   autoSaveEnabled?: boolean;
 };
 
-const ProsemirrorEditor = ({
+export const MarkdownEditor = ({
   documentId,
-  editorState,
-  dispatchTransaction,
+  content,
+  onChange,
   readOnly = false,
   autoSaveEnabled = true,
 }: Props) => {
-  useAutoSaveDocument({editorState, documentId, enabled: autoSaveEnabled});
+  useAutoSaveDocument({ content, documentId, enabled: autoSaveEnabled });
 
   return (
-    <ProseMirror
+    <CodeMirror
       className={styles.editorTextarea}
-      state={editorState}
-      dispatchTransaction={(tr) => dispatchTransaction(tr)}
-      editable={() => !readOnly}
-    >
-      <ProseMirrorDoc />
-    </ProseMirror>
+      value={content}
+      extensions={extensions}
+      onChange={onChange}
+      readOnly={readOnly}
+      editable={!readOnly}
+      theme="dark"
+      placeholder="Your text"
+      basicSetup={{
+        lineNumbers: false,
+        foldGutter: false,
+        highlightActiveLineGutter: false,
+      }}
+    />
   );
 };
-
-export default ProsemirrorEditor;

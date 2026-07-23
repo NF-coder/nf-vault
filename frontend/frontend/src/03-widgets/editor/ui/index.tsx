@@ -1,13 +1,9 @@
 import styles from "./index.module.css";
 
-import type { Transaction } from "prosemirror-state";
 import { useEffect, useState } from "react";
-import { useEditor } from "../lib/prosemirror/useEditor";
 
-import { topbarButtons } from "../config/topbar/Topbar";
 import { EditorTitle } from "@/04-features/edit-title";
-import EditorTopbar from "@/04-features/editor-toolbar/ui";
-import { ProsemirrorEditor } from "@/04-features/edit-document";
+import { MarkdownEditor } from "@/04-features/edit-document";
 import { getDocument } from "@/06-shared/api";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
@@ -20,7 +16,8 @@ const Editor = (
     documentId
   }: props
 ) => {
-  const {editorState, setEditorContent, isReadOnly, setReadOnly, executeCommand} = useEditor()
+  const [content, setContent] = useState("");
+  const isReadOnly = false;
   const [title, setTitle] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const showError = useNotifyError();
@@ -35,7 +32,7 @@ const Editor = (
         const document = await getDocument({ docId: documentId });
         if (!isActive) return;
 
-        setEditorContent(document.content);
+        setContent(document.content);
         setTitle(document.title);
       } catch (error) {
         if (!isActive) return;
@@ -55,8 +52,6 @@ const Editor = (
     };
   }, [documentId]);
 
-  const dispatchTransaction = (tr: Transaction) => executeCommand((state, dispatch) => dispatch(tr));
-  
   return (
     <div className={styles.editorWrapper}>
       <EditorTitle
@@ -66,17 +61,10 @@ const Editor = (
         readOnly={isReadOnly}
         autoSaveEnabled={isLoaded}
       />
-      <EditorTopbar 
-        state={editorState} 
-        runCommand={executeCommand} 
-        topbarButtons={topbarButtons}
-        isReadOnly={isReadOnly}
-        onToggleReadOnly={() => setReadOnly(!isReadOnly)}
-      />
-      <ProsemirrorEditor
+      <MarkdownEditor
         documentId={documentId}
-        editorState={editorState} 
-        dispatchTransaction={dispatchTransaction}
+        content={content}
+        onChange={setContent}
         readOnly={isReadOnly}
         autoSaveEnabled={isLoaded}
       />

@@ -9,8 +9,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@codemirror/lang-markdown": "^6.5.1",
     "@handlewithcare/react-prosemirror": "^2.8.0",
     "@reduxjs/toolkit": "^2.10.1",
+    "@uiw/react-codemirror": "^4.25.11",
     "copy-webpack-plugin": "^13.0.1",
     "prosemirror-codemark": "^0.4.2",
     "prosemirror-commands": "^1.7.1",
@@ -39,6 +41,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^13.5.0",
+    "@types/node": "18.19.70",
     "@types/prosemirror-dev-tools": "^3.0.6",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
