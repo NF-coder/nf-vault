@@ -13,6 +13,8 @@ type Props = {
   content: string;
   onChange: (content: string) => void;
   config: EditorConfig;
+  onCreateEditor?: ReactCodeMirrorProps["onCreateEditor"];
+  onUpdate?: ReactCodeMirrorProps["onUpdate"];
   readOnly?: boolean;
   autoSaveEnabled?: boolean;
 };
@@ -22,6 +24,8 @@ export const MarkdownEditor = ({
   content,
   onChange,
   config,
+  onCreateEditor,
+  onUpdate,
   readOnly = false,
   autoSaveEnabled = true,
 }: Props) => {
@@ -33,6 +37,8 @@ export const MarkdownEditor = ({
       className={styles.editorTextarea}
       value={content}
       onChange={onChange}
+      onCreateEditor={onCreateEditor}
+      onUpdate={onUpdate}
       readOnly={readOnly}
       editable={!readOnly}
     />

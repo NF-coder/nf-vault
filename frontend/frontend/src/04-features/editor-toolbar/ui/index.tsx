@@ -1,71 +1,55 @@
+import type { EditorState, EditorView } from "@uiw/react-codemirror";
+import { TopbarButton } from "@/06-shared/ui/buttons/TopbarButton";
+import {
+  getMarkdownBlockName,
+  isFormatActive,
+  toggleMarkdownFormat,
+} from "../lib/markdownFormatting";
+import type { TopbarButtonConfig } from "../types/EditorTopbar.types";
 import styles from "./index.module.css";
 
-import type { EditorState } from "prosemirror-state";
-import type { Schema, MarkType } from "prosemirror-model";
-
-import { TopbarButton } from "@/06-shared/ui/buttons/TopbarButton";
-import { useMarks } from "../lib/useMarks";
-
-
-type ButtonConfig = {
-  markType: MarkType;
-  label: string;
-  title: string;
-}
-
-type props = {
-  state: EditorState;
-  runCommand: (cmd: (state: EditorState, dispatch?: any) => boolean) => void;
-  topbarButtons: ButtonConfig[];
+type Props = {
+  state: EditorState | null;
+  view: EditorView | null;
+  topbarButtons: TopbarButtonConfig[];
   isReadOnly?: boolean;
   onToggleReadOnly?: () => void;
-}
-
+};
 
 const EditorTopbar = ({
   state,
-  runCommand,
+  view,
   topbarButtons,
   isReadOnly = false,
-  onToggleReadOnly = () => {}
-}: props) => {
-  const { $from } = state.selection;
-  const node = $from.parent;
-  const nodeName = node.type.name;
-  const headingLevel = nodeName === "heading" ? node.attrs.level : null;
-
-  const { activeMarks, handleMarkToggle } = useMarks(state, runCommand);
-
+  onToggleReadOnly = () => {},
+}: Props) => {
   return (
-    <div className={styles['pm-topbar']}>
+    <div className={styles.topbar}>
       <TopbarButton
-        handleClick={() => onToggleReadOnly()}
-        title={"Read Only"}
+        handleClick={onToggleReadOnly}
+        title="Read Only"
         isActive={isReadOnly}
       >
-        {"L"}
+        L
       </TopbarButton>
 
-      <div className={styles['pm-block']}>
-        {nodeName}
-        {headingLevel && ` (${headingLevel})`}
-      </div>
+      <div className={styles.block}>{getMarkdownBlockName(state)}</div>
 
-      <div className={styles['pm-marks']}>
-        {topbarButtons.map(({ markType, label, title }) => {
-          
-          return (
-            <TopbarButton
-              key={markType.name}
-              title={title}
-              isActive={activeMarks.has(markType.name)}
-              handleClick={handleMarkToggle(markType)}
-              isDisabled={isReadOnly}
-            >
-              {label}
-            </TopbarButton>
-          );
-        })}
+      <div className={styles.marks}>
+        {topbarButtons.map(({ format, label, title }) => (
+          <TopbarButton
+            key={format}
+            title={title}
+            isActive={isFormatActive(state, format)}
+            handleClick={(event) => {
+              event.preventDefault();
+              if (view) toggleMarkdownFormat(view, format);
+            }}
+            isDisabled={isReadOnly || !view}
+          >
+            {label}
+          </TopbarButton>
+        ))}
       </div>
     </div>
   );
