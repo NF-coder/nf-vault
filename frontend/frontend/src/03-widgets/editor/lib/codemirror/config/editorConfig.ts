@@ -1,5 +1,7 @@
 import { markdown } from "@codemirror/lang-markdown";
 import type { ReactCodeMirrorProps } from "@uiw/react-codemirror";
+import { markdownWysiwygPlugin } from "../plugins";
+import { markdownEditorTheme } from "../themes";
 
 export type EditorConfig = Pick<
   ReactCodeMirrorProps,
@@ -7,8 +9,8 @@ export type EditorConfig = Pick<
 >;
 
 export const editorConfig: EditorConfig = {
-  extensions: [markdown()],
-  theme: "dark",
+  extensions: [markdown(), markdownWysiwygPlugin],
+  theme: markdownEditorTheme,
   placeholder: "Your text",
   basicSetup: {
     lineNumbers: false,
