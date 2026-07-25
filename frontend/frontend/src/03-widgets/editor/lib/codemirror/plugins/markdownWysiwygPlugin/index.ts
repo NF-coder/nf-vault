@@ -1,5 +1,5 @@
 import { syntaxTree } from "@codemirror/language";
-import { ViewPlugin } from "@uiw/react-codemirror";
+import { Prec, ViewPlugin } from "@uiw/react-codemirror";
 import type { DecorationSet, EditorView, ViewUpdate } from "@uiw/react-codemirror";
 import { buildDecorations } from "./buildDecorations";
 
@@ -26,6 +26,8 @@ class MarkdownWysiwygView {
   }
 }
 
-export const markdownWysiwygPlugin = ViewPlugin.fromClass(MarkdownWysiwygView, {
+const markdownWysiwygViewPlugin = ViewPlugin.fromClass(MarkdownWysiwygView, {
   decorations: (value) => value.decorations,
 });
+
+export const markdownWysiwygPlugin = Prec.highest(markdownWysiwygViewPlugin);
