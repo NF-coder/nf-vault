@@ -2,20 +2,41 @@ package org.nfVault.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.nfVault.controllers.DTO.ErrorResponse;
+import org.nfVault.exceptions.BadRequestException;
 import org.nfVault.exceptions.ConflictException;
 import org.nfVault.exceptions.ExpiredException;
 import org.nfVault.exceptions.NotFoundException;
 import org.nfVault.exceptions.UnauthorizedException;
+import org.nfVault.util.images.formatValidation.ImageValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionMapper {
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceeded(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ImageValidationException.class)
+    public ResponseEntity<ErrorResponse> handleImageValidationException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex) {
