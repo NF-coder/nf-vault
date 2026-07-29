@@ -14,7 +14,7 @@ export class MarkdownMarkerWidget extends WidgetType {
       && widget.className === this.className;
   }
 
-  toDOM() {
+  toDOM(): HTMLSpanElement {
     const element = document.createElement("span");
     element.className = this.className;
     element.textContent = this.text;
