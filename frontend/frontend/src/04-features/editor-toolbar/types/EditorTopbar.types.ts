@@ -1,7 +1,7 @@
-import type { MarkType } from "prosemirror-model";
+export type MarkdownFormat = "strong" | "emphasis" | "code";
 
 export type TopbarButtonConfig = {
-  markType: MarkType;
+  format: MarkdownFormat;
   label: string;
   title: string;
-}
+};

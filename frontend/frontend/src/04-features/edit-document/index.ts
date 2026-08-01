@@ -1,1 +1,1 @@
-export { default as ProsemirrorEditor } from "./ui";
+export { MarkdownEditor } from "./ui";

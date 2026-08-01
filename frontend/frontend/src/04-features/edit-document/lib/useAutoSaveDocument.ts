@@ -1,12 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { EditorState } from "prosemirror-state";
 import { useDebounce } from "@/06-shared/lib/useDebounce";
 import { saveDocument } from "@/06-shared/api";
-import { getDocAsMarkdown } from "./getDocAsMarkdown";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
 type props = {
-  editorState: EditorState;
+  content: string;
   documentId: number;
   debounceMs?: number;
   enabled?: boolean;
@@ -14,14 +12,13 @@ type props = {
 
 export const useAutoSaveDocument = (
   {
-    editorState,
+    content,
     documentId,
     debounceMs = 1000,
     enabled = true,
   }: props 
 ) => {
-  const mdContent = getDocAsMarkdown(editorState)
-  const debouncedContent = useDebounce(mdContent, debounceMs);
+  const debouncedContent = useDebounce(content, debounceMs);
   const savedContentRef = useRef<string | null>(null);
   const documentIdRef = useRef(documentId);
   const showError = useNotifyError()
@@ -38,7 +35,7 @@ export const useAutoSaveDocument = (
     }
 
     if (savedContentRef.current === null) {
-      savedContentRef.current = mdContent;
+      savedContentRef.current = content;
       return;
     }
 

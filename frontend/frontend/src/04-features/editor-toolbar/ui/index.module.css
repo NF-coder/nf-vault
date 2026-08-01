@@ -1,4 +1,4 @@
-.pm-topbar {
+.topbar {
   margin: 5px 1px;
 
   display: flex;
@@ -11,16 +11,13 @@
   border: 1px solid var(--editor-border);
   border-radius: 8px;
   padding: 2px;
-  /*border-bottom: 0px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;*/
 }
 
-.pm-block {
+.block {
   opacity: 0.8;
 }
 
-.pm-marks {
+.marks {
   display: inline-flex;
   gap: 3px;
 }

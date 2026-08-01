@@ -1,36 +1,46 @@
-import "prosemirror-view/style/prosemirror.css";
+import CodeMirror from "@uiw/react-codemirror";
+import type { ReactCodeMirrorProps } from "@uiw/react-codemirror";
 import styles from "./index.module.css";
-import type { EditorState, Transaction } from "prosemirror-state";
-import { ProseMirror, ProseMirrorDoc } from "@handlewithcare/react-prosemirror";
 import { useAutoSaveDocument } from "../lib/useAutoSaveDocument";
 
+type EditorConfig = Pick<
+  ReactCodeMirrorProps,
+  "extensions" | "theme" | "placeholder" | "basicSetup"
+>;
+
 type Props = {
-  documentId: number
-  editorState: EditorState;
-  dispatchTransaction: (tr: Transaction) => void;
+  documentId: number;
+  content: string;
+  onChange: (content: string) => void;
+  config: EditorConfig;
+  onCreateEditor?: ReactCodeMirrorProps["onCreateEditor"];
+  onUpdate?: ReactCodeMirrorProps["onUpdate"];
   readOnly?: boolean;
   autoSaveEnabled?: boolean;
 };
 
-const ProsemirrorEditor = ({
+export const MarkdownEditor = ({
   documentId,
-  editorState,
-  dispatchTransaction,
+  content,
+  onChange,
+  config,
+  onCreateEditor,
+  onUpdate,
   readOnly = false,
   autoSaveEnabled = true,
 }: Props) => {
-  useAutoSaveDocument({editorState, documentId, enabled: autoSaveEnabled});
+  useAutoSaveDocument({ content, documentId, enabled: autoSaveEnabled });
 
   return (
-    <ProseMirror
+    <CodeMirror
+      {...config}
       className={styles.editorTextarea}
-      state={editorState}
-      dispatchTransaction={(tr) => dispatchTransaction(tr)}
-      editable={() => !readOnly}
-    >
-      <ProseMirrorDoc />
-    </ProseMirror>
+      value={content}
+      onChange={onChange}
+      onCreateEditor={onCreateEditor}
+      onUpdate={onUpdate}
+      readOnly={readOnly}
+      editable={!readOnly}
+    />
   );
 };
-
-export default ProsemirrorEditor;
