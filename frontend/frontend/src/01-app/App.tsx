@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 
 import "./themes/default.css";
 import "./App.css";
 import ErrorProvider from "@/06-shared/lib/error/ErrorProvider";
-import { EditPage } from "@/02-pages/edit";
+import { NodePage } from "@/02-pages/node";
 import { TreePage } from "@/02-pages/tree";
 
 const App = () => {
@@ -12,16 +12,16 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/edit/:docId"
-            element={<EditPage/>}
+            path="/"
+            element={<TreePage currentDirectoryId={null} path={[]}/>}
           />
           <Route
-            path="/tree"
-            element={<TreePage/>}
+            path="/:nodeId"
+            element={<NodePage/>}
           />
           <Route
-            path="/tree/:dirId"
-            element={<TreePage/>}
+            path="*"
+            element={<Navigate to="/" replace/>}
           />
         </Routes>
       </BrowserRouter>

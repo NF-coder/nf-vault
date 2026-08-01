@@ -53,11 +53,7 @@ export const Browser = (
               key={document.id}
               name={document.title}
               type={document.type}
-              onClick={
-                document.type === "document"
-                  ? () => navigate(`/edit/${document.id}`)
-                  : () => navigate(`/tree/${document.id}`)
-              }
+              onClick={() => navigate(`/${document.id}`)}
               actions={
                 <>
                   <RenameTreeNodePopup
