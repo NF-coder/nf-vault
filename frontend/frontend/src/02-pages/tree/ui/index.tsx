@@ -35,6 +35,7 @@ export const TreePage = ({ currentDirectoryId, path }: Props) => {
         {readmeDocumentId !== null ? (
           <div className={styles.readmeWrapper}>
             <Editor
+              showTitle={false}
               documentId={readmeDocumentId}
             />
           </div>
