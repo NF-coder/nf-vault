@@ -10,11 +10,13 @@ import { useNavigate } from "react-router";
 
 type props = {
   parentId?: number | null
+  onDocumentsLoaded?: (documents: DocumentListItem[]) => void
 }
 
 export const Browser = (
   {
     parentId = null,
+    onDocumentsLoaded = () => {},
   }: props
 ) => {
   const [documents, setDocuments] = useState<DocumentListItem[]>([]);
@@ -23,8 +25,12 @@ export const Browser = (
 
   const loadDocuments = async () => {
     try {
-      setDocuments(await getDocuments({ parentId }));
+      const loadedDocuments = await getDocuments({ parentId });
+      setDocuments(loadedDocuments);
+      onDocumentsLoaded(loadedDocuments);
     } catch (error) {
+      setDocuments([]);
+      onDocumentsLoaded([]);
       showError(error);
     }
   };
