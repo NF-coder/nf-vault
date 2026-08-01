@@ -26,7 +26,7 @@ export const CreateDocumentButton = (  {
         isOpen={isShown}
         parentId={parentId}
         onClose={() => {setShown(false); onProcessFinished()}}
-        onSuccess={(documentId) => {setShown(false); navigate(`/edit/${documentId}`)}}
+        onSuccess={(documentId) => {setShown(false); navigate(`/${documentId}`)}}
       />
     </>
   )
