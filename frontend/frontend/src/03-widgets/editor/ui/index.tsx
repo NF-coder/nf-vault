@@ -13,11 +13,13 @@ import { editorConfig } from "../lib/codemirror/config";
 
 type props = {
   readonly documentId: number
+  readonly showTitle?: boolean
 }
 
 const Editor = (
   {
-    documentId
+    documentId,
+    showTitle = true
   }: props
 ) => {
   const [content, setContent] = useState("");
@@ -60,13 +62,15 @@ const Editor = (
 
   return (
     <div className={styles.editorWrapper}>
-      <EditorTitle
-        documentId={documentId}
-        title={title}
-        onChange={setTitle}
-        readOnly={isReadOnly}
-        autoSaveEnabled={isLoaded}
-      />
+      { showTitle ?
+        <EditorTitle
+          documentId={documentId}
+          title={title}
+          onChange={setTitle}
+          readOnly={isReadOnly}
+          autoSaveEnabled={isLoaded}
+        /> : null
+      }
       <EditorTopbar
         state={editorState}
         view={editorView}
