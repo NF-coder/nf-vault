@@ -14,7 +14,8 @@ export const editorConfig: EditorConfig = {
     markdown(),
     markdownWysiwygPlugin,
     pasteImagePlugin,
-    markdownImageTheme
+    markdownImageTheme,
+    markdownImageActionsTheme
   ],
   theme: markdownEditorTheme,
   placeholder: "Your text",
