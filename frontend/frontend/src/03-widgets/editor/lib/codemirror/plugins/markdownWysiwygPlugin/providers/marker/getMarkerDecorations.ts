@@ -2,6 +2,7 @@ import { highlightingFor } from "@codemirror/language";
 import { Decoration } from "@uiw/react-codemirror";
 import type { EditorView } from "@uiw/react-codemirror";
 import type { Tag } from "@lezer/highlight";
+import { getImageSize } from "@/04-features/edit-image";
 import { markdownSourceMarkerTag } from "../../../../themes";
 import type { DecorationProvider, MarkdownSyntaxNode } from "../../types";
 import { isSelectionInside } from "../../util/isSelectionInside";
@@ -58,7 +59,13 @@ export const getMarkerDecorations: DecorationProvider = (view, node) => {
   const marker = getMarkerContext(node);
   if (!marker || node.from >= node.to) return { decorations: [] };
 
-  const isOwnerActive = isSelectionInside(view, marker.owner);
+  const ownerTo = marker.owner.name === "Image"
+    ? getImageSize(view.state, marker.owner.to)?.to ?? marker.owner.to
+    : marker.owner.to;
+  const isOwnerActive = isSelectionInside(view, {
+    from: marker.owner.from,
+    to: ownerTo
+  });
 
   if (!isOwnerActive) {
     return {
