@@ -19,34 +19,66 @@ export class MarkdownImageWidget extends WidgetType {
     super();
   }
 
-  eq(other: MarkdownImageWidget) {
-    return this.config.source === other.config.source
-      && this.config.alt === other.config.alt
-      && this.config.title === other.config.title
-      && this.config.width === other.config.width
-      && this.config.imageFrom === other.config.imageFrom
-      && this.config.imageTo === other.config.imageTo
-      && this.config.decorationTo === other.config.decorationTo;
-  }
-
   toDOM(view: EditorView): HTMLElement {
     const container = document.createElement("span");
     const frame = document.createElement("span");
     const image = this.createImage();
+
+    container.className = "cm-markdown-image-widget";
+    frame.className = "cm-markdown-image-frame";
+    frame.append(image);
+    container.append(frame);
+
+    this.updateImage(frame, image);
+    this.bindInteractions(view, container, frame, image);
+
+    return container;
+  }
+
+  updateDOM(
+    container: HTMLElement,
+    view: EditorView,
+    previousWidget: MarkdownImageWidget
+  ): boolean {
+    const frame = container.querySelector<HTMLElement>(
+      ".cm-markdown-image-frame"
+    );
+    const image = frame?.querySelector<HTMLImageElement>(
+      ".cm-markdown-image"
+    );
+    if (!frame || !image) return false;
+
+    previousWidget.destroyInteractions?.();
+    previousWidget.destroyInteractions = null;
+
+    frame.querySelector(".cm-markdown-image-resize-handle")?.remove();
+    frame.querySelector(".cm-markdown-image-controls")?.remove();
+    this.updateImage(frame, image);
+    this.bindInteractions(view, container, frame, image);
+
+    return true;
+  }
+
+  ignoreEvent(): boolean {
+    return true;
+  }
+
+  destroy(): void {
+    this.destroyInteractions?.();
+    this.destroyInteractions = null;
+  }
+
+  private bindInteractions(
+    view: EditorView,
+    container: HTMLElement,
+    frame: HTMLElement,
+    image: HTMLImageElement
+  ) {
     const resizeHandle = this.createResizeHandle();
     const { controls } = createImageControls({
       onSource: () => this.showSource(view)
     });
-
-    container.className = "cm-markdown-image-widget";
-    frame.className = "cm-markdown-image-frame";
-    frame.append(image, resizeHandle, controls);
-    container.append(frame);
-
-    if (this.config.width !== null) {
-      frame.style.width = `${this.config.width}%`;
-      image.style.width = "100%";
-    }
+    frame.append(resizeHandle, controls);
 
     const resize = createImageResize({
       view,
@@ -60,28 +92,25 @@ export class MarkdownImageWidget extends WidgetType {
       initialWidth: this.config.width
     });
 
-    image.addEventListener("click", (event) => {
+    const activateResize = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
       resize.activate();
-    });
-    image.addEventListener("dblclick", (event) => {
+    };
+    const showSource = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
       this.showSource(view);
-    });
+    };
 
-    this.destroyInteractions = resize.destroy;
-    return container;
-  }
+    image.addEventListener("click", activateResize);
+    image.addEventListener("dblclick", showSource);
 
-  ignoreEvent(): boolean {
-    return true;
-  }
-
-  destroy(): void {
-    this.destroyInteractions?.();
-    this.destroyInteractions = null;
+    this.destroyInteractions = () => {
+      image.removeEventListener("click", activateResize);
+      image.removeEventListener("dblclick", showSource);
+      resize.destroy();
+    };
   }
 
   private createImage() {
@@ -95,6 +124,27 @@ export class MarkdownImageWidget extends WidgetType {
     if (this.config.title) image.title = this.config.title;
 
     return image;
+  }
+
+  private updateImage(frame: HTMLElement, image: HTMLImageElement) {
+    if (image.getAttribute("src") !== this.config.source) {
+      image.src = this.config.source;
+    }
+    image.alt = this.config.alt;
+
+    if (this.config.title) {
+      image.title = this.config.title;
+    } else {
+      image.removeAttribute("title");
+    }
+
+    if (this.config.width === null) {
+      frame.style.removeProperty("width");
+      image.style.removeProperty("width");
+    } else {
+      frame.style.width = `${this.config.width}%`;
+      image.style.width = "100%";
+    }
   }
 
   private createResizeHandle() {
