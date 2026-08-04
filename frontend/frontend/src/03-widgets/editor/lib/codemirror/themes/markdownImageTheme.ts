@@ -3,8 +3,8 @@ import { EditorView } from "@uiw/react-codemirror";
 export const markdownImageTheme = EditorView.theme({
   ".cm-markdown-image": {
     display: "inline-block",
-    maxWidth: "min(100%, 48rem)",
-    maxHeight: "32rem",
+    maxWidth: "100%",
+    height: "auto",
     borderRadius: "4px",
     objectFit: "contain",
     verticalAlign: "middle"
