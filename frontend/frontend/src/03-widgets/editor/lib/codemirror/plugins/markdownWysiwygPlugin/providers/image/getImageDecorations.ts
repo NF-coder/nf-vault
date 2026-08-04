@@ -1,4 +1,5 @@
 import { Decoration } from "@uiw/react-codemirror";
+import { getImageSize } from "@/04-features/edit-image";
 import type { DecorationProvider } from "../../types";
 import { isSelectionInside } from "../../util/isSelectionInside";
 import { MarkdownImageWidget } from "./MarkdownImageWidget";
@@ -8,7 +9,13 @@ const unwrapImageText = (text: string) => {
 };
 
 export const getImageDecorations: DecorationProvider = (view, node) => {
-  if (node.name !== "Image" || isSelectionInside(view, node)) {
+  if (node.name !== "Image") {
+    return { decorations: [] };
+  }
+
+  const imageSize = getImageSize(view.state, node.to);
+  const decorationTo = imageSize?.to ?? node.to;
+  if (isSelectionInside(view, { from: node.from, to: decorationTo })) {
     return { decorations: [] };
   }
 
@@ -28,11 +35,19 @@ export const getImageDecorations: DecorationProvider = (view, node) => {
   const title = titleSource?.slice(1, -1) ?? null;
 
   const decoration = Decoration.replace({
-    widget: new MarkdownImageWidget(source, alt, title)
+    widget: new MarkdownImageWidget({
+      source,
+      alt,
+      title,
+      width: imageSize?.width ?? null,
+      imageFrom: node.from,
+      imageTo: node.to,
+      decorationTo
+    })
   });
 
   return {
-    decorations: [decoration.range(node.from, node.to)],
+    decorations: [decoration.range(node.from, decorationTo)],
     skipChildren: true
   };
 };
