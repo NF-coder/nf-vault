@@ -32,6 +32,10 @@
   caret-color: var(--text-accent);
 }
 
+.editorTextarea :global(.cm-scroller) {
+  overflow-x: hidden;
+}
+
 .editorTextarea :global(.cm-line) {
   padding: 0;
 }

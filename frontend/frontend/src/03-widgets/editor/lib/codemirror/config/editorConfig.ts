@@ -1,4 +1,5 @@
 import { markdown } from "@codemirror/lang-markdown";
+import { EditorView } from "@uiw/react-codemirror";
 import type { ReactCodeMirrorProps } from "@uiw/react-codemirror";
 import { pasteImagePlugin } from "@/04-features/paste-image";
 import { markdownWysiwygPlugin } from "../plugins";
@@ -12,6 +13,7 @@ export type EditorConfig = Pick<
 export const editorConfig: EditorConfig = {
   extensions: [
     markdown(),
+    EditorView.lineWrapping,
     markdownWysiwygPlugin,
     pasteImagePlugin,
     markdownImageTheme,
