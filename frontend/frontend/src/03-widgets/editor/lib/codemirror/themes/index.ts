@@ -3,4 +3,5 @@ export {
   markdownSourceMarkerTag,
 } from "./markdownEditorTheme";
 export { markdownImageTheme } from "./markdownImageTheme";
-export { markdownImageActionsTheme } from "./markdownImageActionsTheme"
+export { markdownImageActionsTheme } from "./markdownImageActionsTheme";
+export { codeBlockTheme } from "./codeBlockTheme"
