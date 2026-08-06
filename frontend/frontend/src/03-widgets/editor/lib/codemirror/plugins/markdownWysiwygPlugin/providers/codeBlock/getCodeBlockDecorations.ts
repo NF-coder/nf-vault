@@ -5,6 +5,24 @@ import { isSelectionInside } from "../../util/isSelectionInside";
 
 const CODE_BLOCK_LINE_CLASS = "cm-markdown-code-block-line";
 
+const isFenceOnlyLine = (
+  lineFrom: number,
+  lineTo: number,
+  source: string,
+  ranges: Array<{ from: number; to: number }>
+) => {
+  let remainder = source;
+
+  for (const range of ranges.sort((left, right) => right.from - left.from)) {
+    if (range.from < lineFrom || range.to > lineTo) continue;
+
+    remainder = remainder.slice(0, range.from - lineFrom)
+      + remainder.slice(range.to - lineFrom);
+  }
+
+  return remainder.trim() === "";
+};
+
 export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
   if (node.name !== "FencedCode") return { decorations: [] };
 
@@ -13,6 +31,7 @@ export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
   const lastLine = doc.lineAt(Math.max(node.from, node.to - 1));
   const isActive = isSelectionInside(view, node);
   const infoNode = node.node.getChild("CodeInfo");
+  const codeMarks = node.node.getChildren("CodeMark");
   const language = infoNode
     ? doc.sliceString(infoNode.from, infoNode.to).trim()
     : "";
@@ -27,6 +46,19 @@ export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
     }
     if (lineNumber === lastLine.number) {
       classes.push(`${CODE_BLOCK_LINE_CLASS}-end`);
+    }
+    if (!isActive) {
+      const lineCodeMarks = codeMarks.filter((mark) => {
+        return mark.from >= line.from && mark.to <= line.to;
+      });
+      const hiddenRanges = infoNode ? [...lineCodeMarks, infoNode] : lineCodeMarks;
+
+      if (
+        lineCodeMarks.length > 0
+        && isFenceOnlyLine(line.from, line.to, line.text, hiddenRanges)
+      ) {
+        classes.push(`${CODE_BLOCK_LINE_CLASS}-collapsed`);
+      }
     }
 
     const attributes: Record<string, string> = {

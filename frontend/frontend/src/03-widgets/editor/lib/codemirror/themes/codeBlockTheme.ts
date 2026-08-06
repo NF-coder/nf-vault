@@ -46,6 +46,11 @@ const codeBlockViewTheme = EditorView.theme({
     borderBottom: "1px solid var(--editor-border)",
     borderRadius: "0 0 4px 4px"
   },
+  ".cm-markdown-code-block-line-collapsed": {
+    minHeight: "0",
+    fontSize: "0",
+    lineHeight: "0"
+  },
   ".cm-markdown-code-block-line-start.cm-markdown-code-block-line-end": {
     borderRadius: "4px"
   },
