@@ -35,6 +35,22 @@ const codeBlockViewTheme = EditorView.theme({
     textAlignLast: "left",
     hyphens: "none"
   },
+  ".cm-markdown-code-block-line[data-code-line-number]": {
+    position: "relative",
+    paddingLeft: "2rem"
+  },
+  ".cm-markdown-code-block-line[data-code-line-number]::before": {
+    content: "attr(data-code-line-number)",
+    position: "absolute",
+    left: "0.25rem",
+    width: "1.75rem",
+    paddingRight: "0.25rem",
+    color: "var(--text-secondary)",
+    fontSize: "0.8em",
+    textAlign: "right",
+    userSelect: "none",
+    pointerEvents: "none"
+  },
   ".cm-markdown-code-block-line-start": {
     position: "relative",
     paddingTop: "0.5rem",

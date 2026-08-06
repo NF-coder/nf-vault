@@ -36,10 +36,14 @@ export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
     ? doc.sliceString(infoNode.from, infoNode.to).trim()
     : "";
   const decorations: Array<Range<Decoration>> = [];
+  let codeLineNumber = 0;
 
   for (let lineNumber = firstLine.number; lineNumber <= lastLine.number; lineNumber++) {
     const line = doc.line(lineNumber);
     const classes = [CODE_BLOCK_LINE_CLASS];
+    const lineCodeMarks = codeMarks.filter((mark) => {
+      return mark.from >= line.from && mark.to <= line.to;
+    });
 
     if (lineNumber === firstLine.number) {
       classes.push(`${CODE_BLOCK_LINE_CLASS}-start`);
@@ -48,9 +52,6 @@ export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
       classes.push(`${CODE_BLOCK_LINE_CLASS}-end`);
     }
     if (!isActive) {
-      const lineCodeMarks = codeMarks.filter((mark) => {
-        return mark.from >= line.from && mark.to <= line.to;
-      });
       const hiddenRanges = infoNode ? [...lineCodeMarks, infoNode] : lineCodeMarks;
 
       if (
@@ -64,7 +65,12 @@ export const getCodeBlockDecorations: DecorationProvider = (view, node) => {
     const attributes: Record<string, string> = {
       class: classes.join(" ")
     };
-    
+
+    if (lineCodeMarks.length === 0) {
+      codeLineNumber++;
+      attributes["data-code-line-number"] = String(codeLineNumber);
+    }
+
     if (lineNumber === firstLine.number && language && !isActive) {
       attributes["data-code-language"] = language;
     }
