@@ -18,8 +18,11 @@ export const markerRules: Readonly<Record<string, MarkerRule>> = {
     isSourceMarker: true
   },
   CodeMark: {
-    ownerNames: ["InlineCode"],
+    ownerNames: ["InlineCode", "FencedCode"],
     isSourceMarker: true
+  },
+  CodeInfo: {
+    ownerNames: ["FencedCode"]
   },
   HeaderMark: {
     ownerNames: [

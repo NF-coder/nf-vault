@@ -8,5 +8,6 @@ export type MarkdownSyntaxNode = SyntaxNodeRange & {
   node: {
     parent: (SyntaxNodeRange & { name: string }) | null;
     getChild: (name: string) => SyntaxNodeRange | null;
+    getChildren: (name: string) => SyntaxNodeRange[];
   };
 };
