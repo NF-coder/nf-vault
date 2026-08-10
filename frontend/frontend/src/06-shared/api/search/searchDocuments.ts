@@ -11,11 +11,13 @@ export type SearchDocumentResult = {
 type SearchDocumentsRequest = {
   query: string
   limit?: number
+  signal?: AbortSignal
 }
 
 export const searchDocuments = ({
   query,
-  limit = 10
+  limit = 10,
+  signal
 }: SearchDocumentsRequest): Promise<SearchDocumentResult[]> => {
   const searchParams = new URLSearchParams({
     query,
@@ -23,6 +25,7 @@ export const searchDocuments = ({
   });
 
   return request<SearchDocumentResult[]>(`${API_V1_PATH}/search?${searchParams}`, {
-    method: "GET"
+    method: "GET",
+    signal
   });
 };
