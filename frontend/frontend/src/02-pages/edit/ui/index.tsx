@@ -2,6 +2,7 @@ import styles from "./index.module.css";
 
 import { Editor } from "@/03-widgets/editor";
 import { Path, type PathItem } from "@/03-widgets/path";
+import { SearchBar } from "@/03-widgets/search-bar";
 import { Topbar } from "@/03-widgets/topbar";
 import { useNavigate } from "react-router";
 
@@ -15,7 +16,9 @@ const EditPage = ({ documentId, path }: Props) => {
 
   return (
     <div className={styles.pageWrapper}>
-      <Topbar/>
+      <Topbar>
+        <SearchBar/>
+      </Topbar>
       <div className={styles.editorWrapper}>
         <Path
           path={path}

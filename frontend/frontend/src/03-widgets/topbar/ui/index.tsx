@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { Register } from "@/04-features/register-popup";
 import { Login } from "@/04-features/login-popup";
@@ -6,7 +6,11 @@ import { validate } from "@/06-shared/api/auth/validate";
 import { logout as logoutReq } from "@/06-shared/api/auth/logout";
 import { useNotifyError } from "@/06-shared/lib/useNotifyError";
 
-export const Topbar = () => {
+type Props = {
+  children: ReactNode
+};
+
+export const Topbar = ({ children }: Props) => {
   const [showLoginPopup, isLoginPopupShown] = useState<boolean>(false);
   const [showRegisterPopup, isRegisterPopupShown] = useState<boolean>(false);
   const [isAuthed, setIsAuthed] = useState<boolean>(false);
@@ -37,6 +41,7 @@ export const Topbar = () => {
   return (
     <div className={styles.topbarWrapper}>
       <p className={styles.logoText}>NFVault</p>
+      {children}
       <div className={styles.navSection}>
         {
           isAuthed ? (
