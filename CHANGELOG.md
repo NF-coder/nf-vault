@@ -1,3 +1,47 @@
+## 0.1.0-a1 (2026-08-10)
+
+### Feat
+
+- **widgets/search-bar**: add search bar
+- **searchDocuments**: add AbortSignal
+- **api/search**: add api callfor search request
+- **DocumentSearchRepository**: add highlighted content snippets
+- implement search using lucene
+- add latex formulas plugin
+- add line numbering in code blocks
+- add code blocks
+- add lineWrapping plugin to prevent overflow-x in editor
+- **markdownImageTheme**: remove top & bottom image margin
+- add theme for image actions
+- update MarkdownImageWidget & related to make image resizable
+- **edit-image**: add image resizing feature
+- **editor**: add showTitle setting
+- add README view if it presents in directroy
+- **ImageController**: add Cache-Control header
+- **editor**: add image widget & small refactor
+- **paste-image**: add paste-image cm plugin
+- **uploadImage**: add uploadImage frontend endpoint
+- **images**: add image storage api
+- add basic markdown WYSIWYG plugin
+
+### Fix
+
+- **SearchDocumentRequest**: restore query binding for search suggestions
+- hide code block source markers lines
+- **markdownImageTheme**: remove 48rem horizontal clamp for images
+- **MarkdownImageWidget**: rewrite with updateDOM to prevent image flickering while typing
+- **markdownImageActionsTheme**: remove redundant new lines before and after image widget
+- **popup-window**: specify z-index to prevent overlap
+- **markdownWysiwygPlugin**: set highest priority for plugin
+
+### Refactor
+
+- unify doc and dir paths processing
+- **editor-toolbar**: update to use with cm
+- move cm config to lib/codemirror/config
+- remove deprecated pm code
+- replace pm with cm WYSIWYM editor
+
 ## 0.1.0-a0 (2026-07-09)
 
 ### Feat
