@@ -44,7 +44,22 @@ class DocumentSearchRepositoryTest {
         assertThat(titleResults)
                 .extracting(DocumentSearchResult::id)
                 .containsExactly(1);
-        assertThat(contentResults.get(0).snippet()).contains("Full-text indexing");
+        assertThat(contentResults.get(0).snippet())
+                .contains("Full-text <mark>indexing</mark>");
+    }
+
+    @Test
+    void highlightsContentMatchesAndEscapesDocumentMarkup() {
+        repository.rebuild(List.of(
+                document(1, "Some notes", "<img src=x> searchable text")
+        ));
+
+        DocumentSearchResult result = repository.search("searchable", 10).get(0);
+
+        assertThat(result.snippet())
+                .contains("&lt;img src=x&gt;")
+                .contains("<mark>searchable</mark>")
+                .doesNotContain("<img");
     }
 
     @Test
