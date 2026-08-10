@@ -37,6 +37,11 @@ services:
       DB_URL: postgresql://database:5432/db
       DB_USER_FILE: /run/secrets/db_user
       DB_PASSWORD_FILE: /run/secrets/db_password
+      IMAGE_STORAGE_PATH: /data/images
+      SEARCH_INDEX_PATH: /data/search
+    volumes:
+      - image_data:/data/images
+      - search_data:/data/search
     networks:
       - database_net
       - web_server_net
@@ -61,6 +66,8 @@ secrets:
 
 volumes:
   db_data:
+  image_data:
+  search_data:
 
 configs:
   init-sql:

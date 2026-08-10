@@ -44,6 +44,18 @@ public class DocumentRepository {
                 .getResultList();
     }
 
+    public List<Document> getSearchableDocuments() {
+        return entityManager
+                .createQuery(
+                        """
+                            SELECT document FROM Document document
+                            WHERE document.type = 'document'
+                        """,
+                        Document.class
+                )
+                .getResultList();
+    }
+
     public void update(Document document){
         entityManager.merge(document);
     }

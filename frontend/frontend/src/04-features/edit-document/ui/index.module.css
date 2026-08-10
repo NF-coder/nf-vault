@@ -15,10 +15,36 @@
   /* Убираем линию вокруг */
   outline: none;
 }
-.editorTextarea p {
+
+.editorTextarea :global(.cm-editor) {
+  background: transparent;
   color: var(--text-primary);
   font-weight: 500;
 }
-.editorTextarea :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--text-accent);
+
+.editorTextarea :global(.cm-editor.cm-focused) {
+  outline: none;
+}
+
+.editorTextarea :global(.cm-content) {
+  min-height: 180px;
+  padding: 8px 4px 24px;
+  caret-color: var(--text-accent);
+}
+
+.editorTextarea :global(.cm-scroller) {
+  overflow-x: hidden;
+}
+
+.editorTextarea :global(.cm-line) {
+  padding: 0;
+}
+
+.editorTextarea :global(.cm-placeholder) {
+  color: var(--text-primary);
+  opacity: 0.45;
+}
+
+.editorTextarea :global(.cm-activeLine) {
+  background: transparent;
 }

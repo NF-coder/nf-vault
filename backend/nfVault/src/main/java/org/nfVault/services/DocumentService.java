@@ -6,6 +6,9 @@ import org.nfVault.exceptions.ConflictException;
 import org.nfVault.exceptions.NotFoundException;
 import org.nfVault.models.Document;
 import org.nfVault.repository.DocumentRepository;
+import org.nfVault.event.DocumentChangedEvent;
+import org.nfVault.event.DocumentDeletedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +19,14 @@ import java.util.List;
 @Slf4j
 public class DocumentService {
     private final DocumentRepository documentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public DocumentService(DocumentRepository documentRepository) {
+    public DocumentService(
+            DocumentRepository documentRepository,
+            ApplicationEventPublisher eventPublisher
+    ) {
         this.documentRepository = documentRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -45,6 +53,7 @@ public class DocumentService {
                 .parent(parent)
                 .build();
         documentRepository.create(document);
+        publishDocumentChanged(document);
 
         log.warn("Created document {}", document);
         return document.getId();
@@ -86,6 +95,7 @@ public class DocumentService {
         if (content != null) {
             document.setContent(content);
         }
+        publishDocumentChanged(document);
     }
 
     @Transactional
@@ -95,5 +105,15 @@ public class DocumentService {
         documentRepository.getByParentId(id)
                 .forEach(child -> deleteDocumentById(child.getId()));
         documentRepository.delete(document);
+        eventPublisher.publishEvent(new DocumentDeletedEvent(document.getId()));
+    }
+
+    private void publishDocumentChanged(Document document) {
+        eventPublisher.publishEvent(new DocumentChangedEvent(
+                document.getId(),
+                document.getType(),
+                document.getName(),
+                document.getContent()
+        ));
     }
 }

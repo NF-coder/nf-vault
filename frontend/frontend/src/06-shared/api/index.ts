@@ -6,3 +6,5 @@ export { getDocuments, type DocumentListItem } from "./document/getDocuments";
 export { saveDocument } from "./document/saveDocument";
 export { saveDocumentTitle } from "./document/saveDocumentTitle";
 export { updateDocument } from "./document/updateDocument";
+export { uploadImage } from "./image/uploadImage";
+export { searchDocuments, type SearchDocumentResult } from "./search/searchDocuments";

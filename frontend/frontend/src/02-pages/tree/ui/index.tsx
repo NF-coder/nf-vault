@@ -1,66 +1,52 @@
 import styles from "./index.module.css"
 
 import { Browser } from "@/03-widgets/browser/ui"
+import { Editor } from "@/03-widgets/editor"
 import { Path, type PathItem } from "@/03-widgets/path"
+import { SearchBar } from "@/03-widgets/search-bar"
 import { Topbar } from "@/03-widgets/topbar"
-import { getDocumentPath } from "@/06-shared/api";
-import { useNotifyError } from "@/06-shared/lib/useNotifyError";
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
+import type { DocumentListItem } from "@/06-shared/api";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router";
 
-export const TreePage = () => {
-  const { dirId } = useParams();
+type Props = {
+  currentDirectoryId: number | null;
+  path: PathItem[];
+};
+
+export const TreePage = ({ currentDirectoryId, path }: Props) => {
   const navigate = useNavigate();
-  const showError = useNotifyError();
-  const currentDirectoryId = dirId === undefined ? null : Number(dirId);
-  const isDirectoryIdValid = dirId === undefined || Number.isInteger(currentDirectoryId);
-  const [path, setPath] = useState<PathItem[]>([]);
+  const [readmeDocumentId, setReadmeDocumentId] = useState<number | null>(null);
+  const handleDocumentsLoaded = useCallback((documents: DocumentListItem[]) => {
+    const readme = documents.find((document) => (
+      document.type === "document" && document.title === "README"
+    ));
 
-  useEffect(() => {
-    if (!isDirectoryIdValid) {
-      return;
-    }
-
-    let isActive = true;
-
-    const loadPath = async () => {
-      if (currentDirectoryId === null) {
-        setPath([]);
-        return;
-      }
-
-      try {
-        const directoryPath = await getDocumentPath({ docId: currentDirectoryId });
-        if (!isActive) return;
-
-        setPath(directoryPath);
-      } catch (error) {
-        if (!isActive) return;
-
-        showError(error);
-      }
-    };
-
-    loadPath();
-
-    return () => {
-      isActive = false;
-    };
-  }, [currentDirectoryId, isDirectoryIdValid]);
-
-  if (!isDirectoryIdValid) {
-    return <Navigate to="/tree" replace/>;
-  }
+    setReadmeDocumentId(readme?.id ?? null);
+  }, []);
 
   return (
     <div className={styles.pageWrapper}>
-      <Topbar/>
+      <Topbar>
+        <SearchBar/>
+      </Topbar>
       <div className={styles.treeWrapper}>
         <Path
           path={path}
-          onNavigate={(id) => navigate(id === null ? "/tree" : `/tree/${id}`)}
+          onNavigate={(id) => navigate(id === null ? "/" : `/${id}`)}
         />
-        <Browser parentId={currentDirectoryId}/>
+        {readmeDocumentId !== null ? (
+          <div className={styles.readmeWrapper}>
+            <Editor
+              showTitle={false}
+              documentId={readmeDocumentId}
+            />
+          </div>
+        ) : null}
+        <Browser
+          parentId={currentDirectoryId}
+          onDocumentsLoaded={handleDocumentsLoaded}
+        />
       </div>
     </div>
   )
