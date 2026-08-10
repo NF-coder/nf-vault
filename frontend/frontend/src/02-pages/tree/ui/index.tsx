@@ -3,6 +3,7 @@ import styles from "./index.module.css"
 import { Browser } from "@/03-widgets/browser/ui"
 import { Editor } from "@/03-widgets/editor"
 import { Path, type PathItem } from "@/03-widgets/path"
+import { SearchBar } from "@/03-widgets/search-bar"
 import { Topbar } from "@/03-widgets/topbar"
 import type { DocumentListItem } from "@/06-shared/api";
 import { useCallback, useState } from "react";
@@ -26,7 +27,9 @@ export const TreePage = ({ currentDirectoryId, path }: Props) => {
 
   return (
     <div className={styles.pageWrapper}>
-      <Topbar/>
+      <Topbar>
+        <SearchBar/>
+      </Topbar>
       <div className={styles.treeWrapper}>
         <Path
           path={path}
