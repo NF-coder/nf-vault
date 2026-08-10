@@ -18,6 +18,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.SearcherManager;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.uhighlight.DefaultPassageFormatter;
+import org.apache.lucene.search.uhighlight.LengthGoalBreakIterator;
 import org.apache.lucene.search.uhighlight.UnifiedHighlighter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -27,9 +28,11 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Repository
@@ -123,7 +126,7 @@ public class DocumentSearchRepository {
                 results.add(new DocumentSearchResult(
                         Integer.valueOf(document.get(ID_FIELD)),
                         document.get(TITLE_FIELD),
-                        truncateSnippet(snippets[index]),
+                        normalizeSnippet(snippets[index]),
                         scoreDocument.score
                 ));
             }
@@ -157,23 +160,22 @@ public class DocumentSearchRepository {
     ) throws IOException {
         UnifiedHighlighter highlighter = UnifiedHighlighter
                 .builder(searcher, analyzer)
-                .withFormatter(new DefaultPassageFormatter("", "", " ... ", false))
+                .withBreakIterator(() -> LengthGoalBreakIterator.createClosestToLength(
+                        BreakIterator.getSentenceInstance(Locale.ROOT),
+                        MAX_SNIPPET_LENGTH,
+                        0.5f
+                ))
+                .withFormatter(new DefaultPassageFormatter("<mark>", "</mark>", " … ", true))
                 .withMaxLength(MAX_HIGHLIGHT_LENGTH)
                 .build();
         return highlighter.highlight(CONTENT_FIELD, query, topDocuments, 1);
     }
 
-    private String truncateSnippet(String snippet) {
+    private String normalizeSnippet(String snippet) {
         if (snippet == null) {
             return "";
         }
-
-        String normalized = snippet.strip();
-        if (normalized.length() <= MAX_SNIPPET_LENGTH) {
-            return normalized;
-        }
-
-        return normalized.substring(0, MAX_SNIPPET_LENGTH - 3).stripTrailing() + "...";
+        return snippet.strip();
     }
 
     private org.apache.lucene.document.Document toLuceneDocument(DocumentIndexEntry document) {
