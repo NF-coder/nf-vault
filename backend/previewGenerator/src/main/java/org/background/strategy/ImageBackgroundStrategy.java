@@ -3,18 +3,14 @@ package org.background.strategy;
 import org.PreviewGenerationContext;
 import org.background.BackgroundGenerationStrategy;
 import org.background.config.ImageBackgroundGeneratorConfig;
-import org.utils.image.ImageProvider;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ImageBackgroundStrategy extends BackgroundGenerationStrategy<ImageBackgroundGeneratorConfig> {
-    private final ImageProvider imageProvider;
-
-    public ImageBackgroundStrategy(ImageBackgroundGeneratorConfig config, ImageProvider imageProvider) {
+    public ImageBackgroundStrategy(ImageBackgroundGeneratorConfig config) {
         super(config);
-        this.imageProvider = imageProvider;
     }
 
     @Override
@@ -23,7 +19,9 @@ public class ImageBackgroundStrategy extends BackgroundGenerationStrategy<ImageB
         final BufferedImage image;
 
         try {
-            image = imageProvider.getImage(getConfig().backgroundImagePath());
+            image = this.getConfig().imageProvider().getImage(
+                    getConfig().backgroundImagePath()
+            );
         } catch (IOException e) {
             throw new RuntimeException("Unable to resolve image: ", e);
         }
