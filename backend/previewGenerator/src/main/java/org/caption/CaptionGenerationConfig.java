@@ -7,5 +7,8 @@ public record CaptionGenerationConfig(
         String text,
         Font font,
         Color color,
-        CaptionPosition position
+        CaptionPosition position,
+        Color backgroundColor,
+        Padding boxPadding,
+        Padding canvasPadding
 ) {}

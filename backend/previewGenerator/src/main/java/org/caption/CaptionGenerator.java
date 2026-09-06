@@ -20,24 +20,34 @@ public class CaptionGenerator {
 
         final FontMetrics metrics = imageGraphicsContext.getFontMetrics();
 
-        final int canvasWidth = context.canvasConfig().width();
-        final int canvasHeight = context.canvasConfig().height();
         final int textWidth = metrics.stringWidth(config.text());
         final int textHeight = metrics.getHeight();
 
-        final Point textStart = PositionCalc.calculatePosition(
+        final int boxWidth = textWidth + config.boxPadding().left() + config.boxPadding().right();
+        final int boxHeight = textHeight + config.boxPadding().top() + config.boxPadding().bottom();
+
+        final Point boxPosition = PositionCalc.calculatePosition(
                 config.position(),
-                canvasWidth,
-                canvasHeight,
-                textWidth,
-                textHeight,
-                metrics
+                context.canvasConfig().width(),
+                context.canvasConfig().height(),
+                boxWidth,
+                boxHeight,
+                config.canvasPadding()
         );
+
+        // Background
+        imageGraphicsContext.setColor(config.backgroundColor());
+        imageGraphicsContext.fillRect(boxPosition.x, boxPosition.y, boxWidth, boxHeight);
+
+        // Text
+        imageGraphicsContext.setColor(config.color());
+        final int textX = boxPosition.x + config.boxPadding().left();
+        final int textY = boxPosition.y + config.boxPadding().top() + metrics.getAscent();
 
         imageGraphicsContext.drawString(
                 config.text(),
-                textStart.x,
-                textStart.y
+                textX,
+                textY
         );
     }
 }
