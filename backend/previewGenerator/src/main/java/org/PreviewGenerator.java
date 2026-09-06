@@ -6,6 +6,7 @@ import org.background.BackgroundGeneratorFactory;
 import org.caption.CaptionGenerationConfig;
 import org.caption.CaptionGenerator;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -40,6 +41,11 @@ public class PreviewGenerator {
                     image.createGraphics(),
                     canvasConfig
             )) {
+                context.imageGraphicsContext().setRenderingHint(
+                        RenderingHints.KEY_TEXT_ANTIALIASING,
+                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+                );
+
                 this.backgroundGenerator.generate(context);
                 this.captionGenerator.generate(context);
             } catch (Exception e) {
