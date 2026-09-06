@@ -11,5 +11,7 @@ public record CaptionGenerationConfig(
         Color backgroundColor,
         Padding boxPadding,
         Padding canvasPadding,
-        int borderRadius
+        int borderRadius,
+        int maxTextWidth,
+        int lineSpacing
 ) {}
