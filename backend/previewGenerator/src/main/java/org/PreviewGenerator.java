@@ -45,6 +45,10 @@ public class PreviewGenerator {
                         RenderingHints.KEY_TEXT_ANTIALIASING,
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON
                 );
+                context.imageGraphicsContext().setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON
+                );
 
                 this.backgroundGenerator.generate(context);
                 this.captionGenerator.generate(context);
