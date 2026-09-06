@@ -40,6 +40,10 @@ public class CaptionGenerator {
         imageGraphicsContext.fillRect(boxPosition.x, boxPosition.y, boxWidth, boxHeight);
 
         // Text
+        imageGraphicsContext.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+        );
         imageGraphicsContext.setColor(config.color());
         final int textX = boxPosition.x + config.boxPadding().left();
         final int textY = boxPosition.y + config.boxPadding().top() + metrics.getAscent();
