@@ -37,7 +37,14 @@ public class CaptionGenerator {
 
         // Background
         imageGraphicsContext.setColor(config.backgroundColor());
-        imageGraphicsContext.fillRect(boxPosition.x, boxPosition.y, boxWidth, boxHeight);
+        imageGraphicsContext.fillRoundRect(
+                boxPosition.x,
+                boxPosition.y,
+                boxWidth,
+                boxHeight,
+                config.borderRadius(),
+                config.borderRadius()
+        );
 
         // Text
         imageGraphicsContext.setRenderingHint(
