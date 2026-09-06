@@ -15,9 +15,6 @@ public class CaptionGenerator {
     public void generate(PreviewGenerationContext context) {
         final Graphics2D imageGraphicsContext = context.imageGraphicsContext();
 
-        imageGraphicsContext.setFont(config.font());
-        imageGraphicsContext.setColor(config.color());
-
         final FontMetrics metrics = imageGraphicsContext.getFontMetrics();
 
         final int textWidth = metrics.stringWidth(config.text());
@@ -47,6 +44,7 @@ public class CaptionGenerator {
         );
 
         // Text
+        imageGraphicsContext.setFont(config.font());
         imageGraphicsContext.setColor(config.color());
         final int textX = boxPosition.x + config.boxPadding().left();
         final int textY = boxPosition.y + config.boxPadding().top() + metrics.getAscent();
